@@ -24,16 +24,20 @@ const AudioPlayerBookReader = ()=>{
         timeline.value = percentagePosition;
     }
 
-    function changeSeek () {
+    function changeSeek (e) {
+        console.log(e.target.value)
         const time = (timeline.value * audio.duration) / 100;
         audio.currentTime = time;
     }
+
+    
 
     useEffect(()=>{
         audio = document.querySelector("#audio-elem")
         timeline = document.querySelector(".timeline")
         audio.ontimeupdate = changeTimelinePosition
-        timeline.addEventListener("change", changeSeek)
+        timeline.addEventListener("input", changeSeek)
+        
     })
     return <div>
                 <audio id="audio-elem"></audio>
