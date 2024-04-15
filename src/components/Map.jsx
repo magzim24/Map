@@ -1,7 +1,7 @@
 import React, { useEffect} from "react";
 import * as d3 from 'd3'
 import * as topojson from "topojson";
-import geojson from './map11.json';
+import geojson from './map12.json';
 import ButtonZoom from "./buttons/ButtonZoom";
 import { useWindowSize } from "./useWindowSize";
 import './Map.css';
