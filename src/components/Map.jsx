@@ -10,7 +10,6 @@ const Map = ()=>{
     let width = window.innerWidth;
     let height = window.innerHeight;
     const pointRadius = 2.3;
-    //console.log(geojson)
     let projection = d3.geoAlbers()
         .rotate([-100, 0])
         .parallels([52, 64]).scale(1)

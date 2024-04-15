@@ -11,6 +11,8 @@
     border:none;
     display: flex;
     align-items: center;
+    width: inherit;
+    justify-content: space-between;
 }
 #combobox-btn img{
     width: 15px;
