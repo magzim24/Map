@@ -1,0 +1,41 @@
+.main-cont-catalog-books{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 45%;
+}
+
+.main-catalog-books-wrapper{
+    height: 75%;
+    background: white;
+}
+
+.cont-list-catalog-books{
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: space-between;
+    justify-content: flex-start;
+}
+@media (max-width: 800px) {
+    .main-catalog-books-wrapper{
+        height: 100%;
+    }
+    .main-cont-catalog-books{
+        width: 100%;
+    }
+    .cont-list-catalog-books{
+        margin-bottom: 120px;
+    }
+    .main-catalog-books-wrapper {
+        border-radius: 0; 
+    }
+}
+@media (max-width: 1000px) {
+    .map-buttons{
+        margin-right:30px;
+    }
+}

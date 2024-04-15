@@ -1,0 +1,47 @@
+.rect-menu-fairyTales-cont{
+    filter:drop-shadow(#251d1d 0.0000000000000009rem 0.01rem 1.1px);
+}
+.rect-menu-fairyTales{
+    fill: white;
+    
+}
+#semicircle-rect-menu-fT{
+    fill:white;
+}
+.points-circle{
+    fill:green;
+}
+.label-nationalityAndRegion-rect-menu{
+    text-anchor: middle;
+}
+.label-nationalityAndRegion-rect-menu:first-child{
+    font-weight: 600;
+} 
+.cont-books-rects-menu{
+    fill:#E2E4EA;
+}
+#states{
+    fill: rgba(38,50,56,1);
+}
+.text-rect-button-content-menu{
+    fill:#818181;
+}
+.countBooks-rect-button-content-menu{
+    text-anchor: end;
+}
+.preview-img-book{
+    object-fit: cover;
+    height:200px;
+    width:120px;
+    display:block;
+    margin-bottom:5px;
+    border-radius:8px;
+}
+.cont-bookInCatalog{
+    width:120px;
+    margin-bottom:25px;
+    margin-right: 20px;
+}
+.cont-bookInCatalog span{
+    display:block;
+}
