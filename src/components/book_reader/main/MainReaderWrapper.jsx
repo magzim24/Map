@@ -23,7 +23,7 @@ const MainReaderWrapper = ()=>{
                         <BookInfo></BookInfo>
                         <LanguageComboBoxBookReader></LanguageComboBoxBookReader>
                         <AudioPlayerBookReader></AudioPlayerBookReader>
-                        <div style={{display:"none"}}>
+                        <div id='btn-offer-voice-acting' style={{display:"none"}}>
                             <button>Предложить озвучку</button>
                         </div>
                     </div>

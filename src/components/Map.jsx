@@ -1,7 +1,7 @@
 import React, { useEffect} from "react";
 import * as d3 from 'd3'
 import * as topojson from "topojson";
-import geojson from './map11.json';
+import geojson from './map12.json';
 import ButtonZoom from "./buttons/ButtonZoom";
 import { useWindowSize } from "./useWindowSize";
 import './Map.css';
@@ -10,7 +10,6 @@ const Map = ()=>{
     let width = window.innerWidth;
     let height = window.innerHeight;
     const pointRadius = 2.3;
-    //console.log(geojson)
     let projection = d3.geoAlbers()
         .rotate([-100, 0])
         .parallels([52, 64]).scale(1)
@@ -61,14 +60,17 @@ const Map = ()=>{
     }
 
     function reset(event) {
-        states.transition().style("fill", null);
-        d3.selectAll("circle").remove()
-        d3.select(".rect-menu-fairyTales-cont").remove()
-        svg.transition().duration(750).call(
-            zoom.transform,
-            d3.zoomIdentity,
-            d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
-        );
+        if(d3.select(event.target).attr("class") === d3.select(".main-svg").attr("class")){
+            states.transition().style("fill", null);
+            d3.selectAll("circle").remove()
+            d3.select(".rect-menu-fairyTales-cont").remove()
+            svg.transition().duration(750).call(
+                zoom.transform,
+                d3.zoomIdentity,
+                d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
+            );
+        }
+        
     }
 
     const appendRectForPointClicked = (parent_target_g, target, size_rect)=>{
@@ -149,10 +151,15 @@ const Map = ()=>{
         
         if(json["audioId"] !== null){
             d3.select(".opened-book-img-profile").attr("src", "AudioAndBook.svg")
+            d3.select("#btn-offer-voice-acting").style("display", "none")
+            d3.select("#main-cont-audioplayer").style("display", "block")
+            d3.select("#combobox-language-selection").style("display", "block")
         }
         else {
             d3.select(".opened-book-img-profile").attr("src", "opened_book.svg")
-
+            d3.select("#main-cont-audioplayer").style("display", "none")
+            d3.select("#btn-offer-voice-acting").style("display", "block")
+            d3.select("#combobox-language-selection").style("display", "none")
         }
         const elemSelect = d3.select("#lang-select")
         elemSelect.selectChildren().remove()
@@ -211,7 +218,6 @@ const Map = ()=>{
     const FillBookInCatalogBooks = (commits)=>{
         commits.map(data=>{
             const list = d3.select(".cont-list-catalog-books").append("div").attr("class", "cont-bookInCatalog")
-            //let URL = ;
             const preview = list.append("img").on('click', imageClicked.bind(this, data["id"]));
                 fetch('http://saintmolly.ru:3005/api/story/image/'+String(data["id"]))
                 .then(response => response.blob())
@@ -224,28 +230,12 @@ const Map = ()=>{
                 
                 list.append("span").text(data["name"])
             if(data["audioId"] !== null){
-                /* list.append("span").text("Озвучил: ").attr("class", "author-book-span") */
                 const div = list.append("div").attr("class", "book-specification-img")
                 div.append("img").attr("src", "AudioAndBook.svg").attr("class", "AudioAndBook-img")
-                //div.append("img").attr("src", "star.svg").attr("class", "img-star")
-                
-                /* if(data["audioId"] !== undefined)
-                {
-                    
-                    fetch("http://saintmolly.ru:3005/api/story/rating/"+String(data["audioId"]))
-                    .then(response => response.json())
-                    .then(commit=>{
-                        
-                        div.append("span").attr("class", "rating-audio-book-in-catalog").text(commit["ratingAudio"])
-                    })
-                } */
-                
             }
             if(data["audioId"] === null){
                 const div = list.append("div").attr("class", "book-specification-img")
                 div.append("img").attr("src", "opened_book.svg").attr("class", " opened-book-img")
-                //div.append("img").attr("src", "star.svg").attr("class", "img-star")
-
             }
         })
     }
@@ -255,19 +245,93 @@ const Map = ()=>{
         d3.select("#main-cat-books-wrapper").style("display", "flex");
         d3.select("#ethnicGroup-span-list-fairyTales").attr("ethnicGroupId", target.attr("ethnicGroup"))
         fetch('http://saintmolly.ru:3005/api/ethnic-group/'+String(target.attr("ethnicGroup")))
+        .then(response => response.json())
+        .then(commits=>{
+            d3.select("#ethnicGroup-span-list-fairyTales").text(commits["name"]);
+            fetch('http://saintmolly.ru:3005/api/story/ethnic-group/'+String(target.attr("ethnicGroup")))
             .then(response => response.json()).then(commits=>{
-                d3.select("#ethnicGroup-span-list-fairyTales").text(commits["name"]);
-                fetch('http://saintmolly.ru:3005/api/story/ethnic-group/'+String(target.attr("ethnicGroup")))
-                    .then(response => response.json()).then(commits=>{
-                        //d3.select(".list-catalog-books").selectChildren().remove()
-                        d3.select(".cont-list-catalog-books").selectChildren().remove()
-                        FillBookInCatalogBooks(commits)
-                    })
+                d3.select(".cont-list-catalog-books").selectChildren().remove()
+                FillBookInCatalogBooks(commits)
             })
+        })
     }
 
+    function addRectToContentRect(rect_g, width, size_rect, y){
+        rect_g.append("rect")
+        .attr("x", size_rect[0]/2 - (width)/2)
+        .attr("y", y)
+        .attr("width", width)
+        .attr("height", 2.1*scaleCenter.scale/800)
+        .attr("rx", scaleCenter.scale/800)
+        .attr("ry", scaleCenter.scale/800)
+    }
 
-    
+    function addImageToContentRect(rect_g, size_rect, width, image_link, y){
+        rect_g.append("g:image")
+        .attr("x", size_rect[0]/2 - width/2 + 1.4*scaleCenter.scale/800)
+        .attr("y", y + ((2.1 - 1.4)*scaleCenter.scale/800)/2)
+        .attr("width", 1.4*scaleCenter.scale/800)
+        .attr("height", 1.4*scaleCenter.scale/800)
+        .attr("xlink:href", image_link)
+    }
+
+    function addTextToContentRect(rect_g, width, size_rect, y, font_size_k, Text_){
+        const text =  rect_g.append("text")
+        .attr("class", "text-rect-button-content-menu")
+        .attr("x", size_rect[0]/2 - width/2 + 1.4*2*scaleCenter.scale/800 + 1.2*scaleCenter.scale/800)
+        .style("font-size", String(font_size_k*scaleCenter.scale/800)+"px")
+        .text(Text_)
+        text.attr("y", y +((2.1)*scaleCenter.scale/800)/2 + (text.node().getBBox().height/2) - 0.25*scaleCenter.scale/800)
+    }
+
+    function addCountFairyTalesToContentRect(rect_g, width, y, font_size_k, countText){
+        const count =  rect_g.append("text")
+        .attr("class", "countBooks-rect-button-content-menu text-rect-button-content-menu")
+        .attr("x", width + scaleCenter.scale/800)
+        .style("font-size", String(font_size_k*scaleCenter.scale/800)+"px")
+        .text(countText)
+        count.attr("y", y +((2.1)*scaleCenter.scale/800)/2 + (count.node().getBBox().height/2) - 0.25*scaleCenter.scale/800)
+    }
+
+    const appendContentRect = (y, image_link, font_size_k, Text_, countText, event, content_svg, size_rect)=>{
+        const width = size_rect[0]*0.75
+        const rect_g = content_svg.append("g").attr("class", "cont-books-rects-menu")
+        rect_g.on("click", FillCatalogBooks.bind(this, event, d3.select(event.target)))
+        
+        addRectToContentRect(rect_g, width, size_rect, y)
+        addImageToContentRect(rect_g, size_rect, width, image_link, y)
+        addTextToContentRect(rect_g, width, size_rect, y, font_size_k, Text_)
+        addCountFairyTalesToContentRect(rect_g, width, y, font_size_k, countText)
+    }
+
+    function addButtonToPointMenu(parent_target_g, size_rect, event, content_svg){
+        const target = d3.select(event.target)
+        
+        fetch('http://saintmolly.ru:3005/api/story/ethnic-group/'+String(target.attr("ethnicGroup")))
+            .then(response => response.json())
+            .then(commits=>{
+                appendContentRect(6.8*scaleCenter.scale/800, "books.svg", 1,
+                 "Книги", commits.length, event, content_svg, size_rect)
+                let countAudio = 0
+                commits.map(data => {if(data["audioId"]) countAudio++})
+                appendContentRect((6.8+2.7)*scaleCenter.scale/800, "note.svg", 1,
+                 "Аудиокниги", countAudio, event, content_svg, size_rect)
+                parent_target_g = parent_target_g.append("g")
+                
+                appendClipPathForCircleRectMenu(parent_target_g, target, size_rect)
+                appendSemiCircleForRectMenu(parent_target_g, target)
+            }
+        )
+    }
+    function appendSVGElemContToPointMenu(xText, yText, size_rect){
+        return d3.select(".rect-menu-fairyTales-cont")
+                .append("svg")
+                .attr("class", "content-cont-rect-menu-svg")
+                .attr("x", xText )
+                .attr("y", yText- 6*scaleCenter.scale/850)
+                .attr("width", size_rect[0])
+                .attr("height", size_rect[1])
+    }
     function pointClicked(event){
         event.stopPropagation()
 
@@ -284,119 +348,62 @@ const Map = ()=>{
         
         const rect = d3.select(".rect-menu-fairyTales").on("click", SVGRectMenu)
  
-        const xText = Number(rect.attr("x")) //+ 13.5 * scaleCenter.scale/800;
+        const xText = Number(rect.attr("x"))
         const yText = Number(rect.attr("y")) + 5.5*scaleCenter.scale/800
 
-        const content_svg = d3.select(".rect-menu-fairyTales-cont")
-        .append("svg")
-        .attr("class", "content-cont-rect-menu-svg")
-        .attr("x", xText )
-        .attr("y", yText- 6*scaleCenter.scale/850)
-        .attr("width", size_rect[0])
-        .attr("height", size_rect[1])
-        
-        
+        const content_svg = appendSVGElemContToPointMenu(xText, yText, size_rect)
         appendTextToRectMenuFairyTales(content_svg, "50%", 3*scaleCenter.scale/800, target.attr("ethnicGroup"), 1.8)
         appendTextToRectMenuFairyTales(content_svg, "50%", 5*scaleCenter.scale/800, target.attr("regionName"), 1)
-
-        const appendContentRect = (y, image_link, font_size_k, Text_, countText)=>{
-            const width = size_rect[0]*0.75
-            const rect_g = content_svg.append("g").attr("class", "cont-books-rects-menu")
-            rect_g.on("click", FillCatalogBooks.bind(this, event, target))
-            rect_g.append("rect")
-            .attr("x", size_rect[0]/2 - (width)/2)
-            .attr("y", y)
-            .attr("width", width)
-            .attr("height", 2.1*scaleCenter.scale/800)
-            .attr("rx", scaleCenter.scale/800).attr("ry", scaleCenter.scale/800)
-
-            rect_g.append("g:image")
-            .attr("x", size_rect[0]/2 - width/2 + 1.4*scaleCenter.scale/800)
-            .attr("y", y + ((2.1 - 1.4)*scaleCenter.scale/800)/2)
-            .attr("width", 1.4*scaleCenter.scale/800)
-            .attr("height", 1.4*scaleCenter.scale/800)
-            .attr("xlink:href", image_link)
-            
-            const text =  rect_g.append("text")
-            .attr("class", "text-rect-button-content-menu")
-            .attr("x", size_rect[0]/2 - width/2 + 1.4*2*scaleCenter.scale/800 + 1.2*scaleCenter.scale/800)
-            .style("font-size", String(font_size_k*scaleCenter.scale/800)+"px")
-            .text(Text_)
-            text.attr("y", y +((2.1)*scaleCenter.scale/800)/2 + (text.node().getBBox().height/2) - 0.25*scaleCenter.scale/800)
-
-            const count =  rect_g.append("text")
-            .attr("class", "countBooks-rect-button-content-menu text-rect-button-content-menu")
-            .attr("x", width + scaleCenter.scale/800)
-            .style("font-size", String(font_size_k*scaleCenter.scale/800)+"px")
-            .text(countText)
-            count.attr("y", y +((2.1)*scaleCenter.scale/800)/2 + (count.node().getBBox().height/2) - 0.25*scaleCenter.scale/800)
-        }
-        fetch('http://saintmolly.ru:3005/api/story/ethnic-group/'+String(target.attr("ethnicGroup")))
-            .then(response => response.json()).then(commits=>{
-                appendContentRect(6.8*scaleCenter.scale/800, "books.svg", 1, "Книги", commits.length)
-                let countAudio = 0
-                commits.map(data => {if(data["audioId"]) countAudio++})
-                appendContentRect((6.8+2.7)*scaleCenter.scale/800, "note.svg", 1, "Аудиокниги", countAudio)
-                parent_target_g = parent_target_g.append("g")
-
-                appendClipPathForCircleRectMenu(parent_target_g, target, size_rect)
-
-                appendSemiCircleForRectMenu(parent_target_g, target)
-            }
-        )
+        addButtonToPointMenu(parent_target_g, size_rect, event, content_svg)
         
     }
 
+    function addPointCircleInPath(g, data, targetElem){
+        const coord = projection([Number(data["longitude"]), Number(data["latitude"])])
+        const circle = g.append("g").append('circle')
+            .attr('cx', coord[0])
+            .attr('cy', coord[1])
+            .attr('r', pointRadius)
+            .attr("regionName", targetElem.getAttribute("regionName"))
+            .attr("ethnicGroup", data["ethnicGroupId"])
+            .attr("class", "points-circle")
+            .on("click", pointClicked)
+    }
+    
+    function setZoomedPath(event, x0, x1, y0, y1){
+        states.transition().style("fill", null);
+        d3.select(event.target).transition().style("fill", "red");    
+        svg.transition().duration(750).call(
+            zoom.transform,
+            d3.zoomIdentity.translate(width / 2, height / 2)
+            .scale(Math.min(22, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)))
+            .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
+            d3.pointer(event, svg.node())
+        );
+    }
+    function fillPathByPoints(elem, g){
+        fetch("http://saintmolly.ru:3005/api/map/ethnic-group/"+String(elem.getAttribute("ID")))
+        .then(response => response.json())
+        .then(commits =>{
+            if(commits.statusCode === undefined){
+                commits.map((data)=>{
+                    addPointCircleInPath(g, data, elem)
+                })
+            }}
+        );
+    }
     function PathClicked(event, d) {
         const [[x0, y0], [x1, y1]] = path.bounds(d);
         event.stopPropagation();
         
         let g = d3.select(".points");
         
-        //let json = JSON.parse(points);
-        
         if(d3.select(event.target).style("fill")!== "rgb(255, 0, 0)"){
             document.getElementsByClassName("points")[0].innerHTML="";
-            //console.log(String(event.target.getAttribute("ID")))
-            fetch("http://saintmolly.ru:3005/api/map/ethnic-group/"+String(event.target.getAttribute("ID")))
-            .then(response => response.json())
-            .then(commits =>{
-                //console.log(commits)
-                    if(commits.statusCode === undefined){
-                         
-                        commits.map((data)=>{
-                            //console.log(data)
-                            /* if(data["regionName"] === event.target.getAttribute("regionName")){ */
-                            //console.log(data)
-                            const coord = projection([Number(data["longitude"]), Number(data["latitude"])])
-                            const circle = g.append("g").append('circle')
-                            .attr('cx', coord[0])
-                            .attr('cy', coord[1])
-                            .attr('r', pointRadius)
-                            .attr("regionName", event.target.getAttribute("regionName"))
-                            .attr("ethnicGroup", data["ethnicGroupId"])
-                            .attr("class", "points-circle")
-                            .on("click", pointClicked)
-                            
-                                //.transition().duration(650).attr("r", (2.3*scaleCenter.scale/1000)*1.4);
-                            //}
-                        })
-                    }}
-                );
+            fillPathByPoints(event.target, g)
+            
         }
-        
-        states.transition().style("fill", null);
-        d3.select(event.target)
-        .transition()
-        .style("fill", "red");    
-        svg.transition().duration(750).call(
-            zoom.transform,
-            d3.zoomIdentity
-            .translate(width / 2, height / 2)
-            .scale(Math.min(22, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)))
-            .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
-            d3.pointer(event, svg.node())
-        );
+        setZoomedPath(event, x0, x1, y0, y1)
     }
 
     const zoomPlus = ()=>{
@@ -410,6 +417,8 @@ const Map = ()=>{
         event.stopPropagation()
     }
 
+    //function 
+
     useEffect(() => {
         //console.log(geojson)
         svg = d3.select("svg");
@@ -418,6 +427,8 @@ const Map = ()=>{
                 .data(data)
                 .join("path")
                 .style("stroke-linejoin", "round")
+                .style("stroke", "#b7b7b7")
+                .style("stroke-width", "0.1")
                 .on("click", PathClicked)
                 .attr("d", path)
                 .attr("regionName", (d)=>d.properties.shapeName)
