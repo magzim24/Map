@@ -43,7 +43,7 @@ const AudioPlayerBookReader = ()=>{
         timeline.addEventListener("input", changeSeek)
         
     })
-    return <div>
+    return <div id="main-cont-audioplayer">
                 <audio id="audio-elem"></audio>
                 <div className="controls">
                     <input type="range" className="timeline" max={"100"} defaultValue={"0"}/>

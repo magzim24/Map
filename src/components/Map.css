@@ -29,19 +29,3 @@
 .countBooks-rect-button-content-menu{
     text-anchor: end;
 }
-.preview-img-book{
-    object-fit: cover;
-    height:200px;
-    width:120px;
-    display:block;
-    margin-bottom:5px;
-    border-radius:8px;
-}
-.cont-bookInCatalog{
-    width:120px;
-    margin-bottom:25px;
-    margin-right: 20px;
-}
-.cont-bookInCatalog span{
-    display:block;
-}

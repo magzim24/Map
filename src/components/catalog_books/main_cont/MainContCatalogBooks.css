@@ -1,16 +1,25 @@
-.main-cont-catalog-books{
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 45%;
+.preview-img-book{
+    object-fit: cover;
+    height:200px;
+    width:120px;
+    display:block;
+    margin-bottom:5px;
+    border-radius:8px;
 }
-
-.main-catalog-books-wrapper{
-    height: 75%;
+.cont-bookInCatalog{
+    width:120px;
+    margin-bottom:25px;
+    margin-right: 20px;
+}
+.cont-bookInCatalog span{
+    display:block;
+}
+.main-content-catalog-wrapper{
+    border-radius:12px;
     background: white;
+    width: 50%;
+    height: 75%;
 }
-
 .cont-list-catalog-books{
     overflow-y: auto;
     overflow-x: hidden;
@@ -20,18 +29,15 @@
     align-content: space-between;
     justify-content: flex-start;
 }
+
 @media (max-width: 800px) {
-    .main-catalog-books-wrapper{
+    .main-content-catalog-wrapper{
         height: 100%;
-    }
-    .main-cont-catalog-books{
         width: 100%;
+        border-radius: 0; 
     }
     .cont-list-catalog-books{
         margin-bottom: 120px;
-    }
-    .main-catalog-books-wrapper {
-        border-radius: 0; 
     }
 }
 @media (max-width: 1000px) {
