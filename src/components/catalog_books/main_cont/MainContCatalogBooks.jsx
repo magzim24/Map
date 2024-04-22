@@ -4,6 +4,7 @@ import './MainContCatalogBooks.css'
 
 const MainContCatalogBooks = ()=>{
     
+    console.log(window.innerWidth, window.innerHeight)
     const closeCatalogHandler = ()=>{
         document.getElementById("main-cat-books-wrapper").style.setProperty("display", "none");
     }

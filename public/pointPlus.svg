@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="30mm"
+   height="30mm"
+   viewBox="0 0 30 30"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1-alpha (2a16015, 2021-02-21)"
+   sodipodi:docname="pointPlus.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     objecttolerance="10.0"
+     gridtolerance="10.0"
+     guidetolerance="10.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.54929735"
+     inkscape:cx="-435.10132"
+     inkscape:cy="6.3717766"
+     inkscape:window-width="1857"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g14" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Слой 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g14">
+      <path
+         id="path31"
+         style="fill:#3771c8;fill-rule:evenodd;stroke-width:0.999999"
+         d="M 56.777344 0.22851562 A 56.549514 56.549514 0 0 0 0.22851562 56.777344 A 56.549514 56.549514 0 0 0 56.777344 113.32617 A 56.549514 56.549514 0 0 0 113.32617 56.777344 A 56.549514 56.549514 0 0 0 56.777344 0.22851562 z M 57.119141 7.3964844 A 49.495045 49.495045 0 0 1 106.61328 56.890625 A 49.495045 49.495045 0 0 1 57.119141 106.38672 A 49.495045 49.495045 0 0 1 7.6230469 56.890625 A 49.495045 49.495045 0 0 1 57.119141 7.3964844 z "
+         transform="scale(0.26458333)" />
+      <circle
+         style="fill:#3771c8;fill-rule:evenodd;stroke-width:0.204183"
+         id="path520"
+         cx="15.112583"
+         cy="15.112583"
+         r="11.500013" />
+      <g
+         id="g18">
+        <rect
+           style="fill:#ffffff;stroke-width:0.124082"
+           id="rect768"
+           width="1.8176069"
+           height="9.8807993"
+           x="14.351724"
+           y="10.457735"
+           rx="0.050041929" />
+        <rect
+           style="fill:#ffffff;stroke-width:0.127541"
+           id="rect768-9"
+           width="1.9329687"
+           height="9.8162928"
+           x="14.390251"
+           y="-20.183838"
+           rx="0.053218048"
+           transform="rotate(90)" />
+      </g>
+    </g>
+  </g>
+</svg>
