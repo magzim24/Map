@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import "./AudioPlayerBookReader.css"
 
 const AudioPlayerBookReader = ()=>{
 
@@ -45,13 +46,13 @@ const AudioPlayerBookReader = ()=>{
     })
     return <div id="main-cont-audioplayer">
                 <audio id="audio-elem"></audio>
-                <div className="controls">
+                <div className="controls" style={{width: 150}}>
                     <input type="range" className="timeline" max={"100"} defaultValue={"0"}/>
-                    <button className="back-play-btn" onClick={rewind.bind(this, 0)}></button>
-                    <button className="play-btn" onClick={togglePlay}><img src="play.svg" alt="" /></button>
-                    <button className="forward-play-btn" onClick={rewind.bind(this, 1)}></button>
-                </div>
-                
+                    <button className="back-play-btn" onClick={rewind.bind(this, 0)}><img src="minus.svg" style={{width: 15, height: 15}}/></button>
+                    <button className="play-btn" onClick={togglePlay}><img src="play.svg" alt="" style={{width: 15, height: 15}}/></button>
+                    <button className="forward-play-btn" onClick={rewind.bind(this, 1)}> <img src="plus.svg" style={{width: 15, height: 15}}/></button>
            </div>
+    </div>
 }
+
 export default AudioPlayerBookReader;
