@@ -1,6 +1,8 @@
 import "./SearchInput.css"
 import * as d3 from 'd3'
-
+import imageClicked from "../BookProfile.js"
+//import addPointCircleInPath from "../PointGenerator.js"
+import foundedPointsBySearchInput from "../Map.jsx"
 const SearchInput=()=>{
 
     function buttonPanelOpenerClicked(event){
@@ -26,11 +28,11 @@ const SearchInput=()=>{
         let content = block.nextSibling
         console.log(content.style.height)
         if(content.style.height!=="0px"){
-            d3.select(".btn-expanding-list").transition().duration(750).style("transform", "rotate(-90deg)")
+            d3.select(block).selectChild("img").transition().duration(750).style("transform", "rotate(-90deg)")
             content.style.height = 0;
         }
         else{
-            d3.select(".btn-expanding-list").transition().duration(750).style("transform", "rotate(90deg)")
+            d3.select(block).selectChild("img").transition().duration(750).style("transform", "rotate(90deg)")
             
             content.style.height = content.scrollHeight+"px";
         }
@@ -38,44 +40,40 @@ const SearchInput=()=>{
         
     }
     function appendHeaderCategory(panel, nameOfCategory, elemClassName){
-        const div = panel.append("div").attr("class", "header-regions-cont")
-        .on("click", ButtonExtendingListClicked.bind(this, document.querySelector(elemClassName)))
+        const div = panel.append("div").attr("class", elemClassName+ " header-cont")
+        .on("click", ButtonExtendingListClicked.bind(this, document.querySelector("."+elemClassName)))
         div.append("h3").text(nameOfCategory).attr("class", "result-searching-header")
         div.append("img").attr("src", "arrow-panel.svg").attr("class", "btn-expanding-list")
     }
-    function fillSearchingPanelByFairyTales(panel, nameEthnicGroup){
-        appendHeaderCategory(panel, "Сказки", ".header-fairyTales-cont")
-        const cont = panel.append("div").attr("class", "content-cont-regions")
-        fetch("http://saintmolly.ru:3005/api/map/ethnic-group/by-name-ethnic-group/"+String(nameEthnicGroup))
+    function FairyTalesResultClicked(storyId){
+        imageClicked(storyId)
+    }
+    function fillSearchingPanelByFairyTales(panel, nameFairyTales){
+        appendHeaderCategory(panel, "Сказки", "header-fairyTales-cont")
+        const cont = panel.append("div").attr("class", "content-cont")
+        fetch("http://saintmolly.ru:3005/api/story/by-name/"+String(nameFairyTales))
         .then(response => response.json())
         .then(commit => {
             commit.forEach(data=>{
                 //fetch()
                 cont.append("span").text(data["name"])
                 .style("display", "block")
-                .attr("class", "span-result-searching").on("click", regionResultClicked.bind(this, data))
+                .attr("class", "span-result-searching").on("click", FairyTalesResultClicked.bind(this, data["id"]))
             })
         })
         
     }
     function fillSearchingPanelByNations(panel, nameEthnicGroup){
-        appendHeaderCategory(panel, "Народности", ".header-nations-cont")
-        const cont = panel.append("div").attr("class", "content-cont-regions")
-        fetch("http://saintmolly.ru:3005/api/map/ethnic-group/by-name-ethnic-group/"+String(nameEthnicGroup))
-        .then(response => response.json())
-        .then(commit => {
-            commit.forEach(data=>{
-                //fetch()
-                cont.append("span").text(data["name"])
-                .style("display", "block")
-                .attr("class", "span-result-searching").on("click", regionResultClicked.bind(this, data))
-            })
-        })
+        appendHeaderCategory(panel, "Народности", "header-nations-cont")
+        const cont = panel.append("div").attr("class", "content-cont")
+        document.querySelector("#search-input").dispatchEvent(new CustomEvent("foundedSearchedData", {
+            detail:{ container: cont, nameEthnicGroup:nameEthnicGroup}
+        }))
         
     }
     function fillSearchingPanelByRegions(panel, searchInDocument){
-        appendHeaderCategory(panel, "Регионы", ".header-regions-cont")
-        const cont = panel.append("div").attr("class", "content-cont-regions")
+        appendHeaderCategory(panel, "Регионы", "header-regions-cont")
+        const cont = panel.append("div").attr("class", "content-cont")
 
         searchInDocument.forEach(data=>{
             cont.append("span").text(data.getAttribute("regionName"))
@@ -96,7 +94,7 @@ const SearchInput=()=>{
                     fillSearchingPanelByRegions(panel, searchInDocument)
                 }
                 fillSearchingPanelByNations(panel, valueInput)
-
+                fillSearchingPanelByFairyTales(panel, valueInput)
             }
         }
         

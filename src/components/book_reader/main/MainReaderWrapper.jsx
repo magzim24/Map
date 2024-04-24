@@ -13,29 +13,24 @@ const MainReaderWrapper = ()=>{
 
     return <div id="main-cont-reader-horizontal">
                 <div>
-                    <button onClick={btnCloseClicked} id="closeBtn">
-                        <img src="close.svg" alt="" id="closeImg"/>
+                    <button onClick={btnCloseClicked}>
+                        <img src="" alt="" />
                     </button>
-                    <div id="imgDiv">
-                        <img className='preview-img-book-reader' src="" alt=""/>
+                    <div>
+                        <img className='preview-img-book-reader' src="" alt="" />
                     </div>
-                    <div id="allDiv">
+                    <div>
                         <BookInfo></BookInfo>
                         <LanguageComboBoxBookReader></LanguageComboBoxBookReader>
                         <AudioPlayerBookReader></AudioPlayerBookReader>
                         <div id='btn-offer-voice-acting' style={{display:"none"}}>
                             <button>Предложить озвучку</button>
-                        <div>
-                            <button style={{background: 'transparent', border: 'none'}}>
-                            Предложить озвучку
-                            </button>
                         </div>
                     </div>
                 </div>
                 <div>
-                <TextReader></TextReader>
+                    <TextReader></TextReader>
                 </div>
            </div>
-    </div>
 }
 export default MainReaderWrapper;
