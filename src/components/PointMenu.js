@@ -151,6 +151,7 @@ export default class PointMenu{
         fetch('http://saintmolly.ru:3005/api/story/ethnic-group/'+String(target_.attr("ethnicGroup")))
         .then(response => response.json())
         .then(commits=>{
+            
             d3.select(".rect-menu-fairyTales")
             .attr('x', Number(target_.attr("cx"))-settingsPointMenu["size-rect"][0]/2)
             .attr('y', Number(target_.attr("cy"))-settingsPointMenu["size-rect"][1])
@@ -171,7 +172,12 @@ export default class PointMenu{
             .attr('cx', Number(target_.attr("cx")))
             .attr('cy', Number(target_.attr("cy")))
             let labels = d3.selectAll(".label-nationalityAndRegion-rect-menu")
-            labels["_groups"][0][0].innerHTML = commits[0]["ethnicGroup"]["name"]
+            console.log(labels, commits)
+            //
+            fetch("http://saintmolly.ru:3005/api/ethnic-group/"+String(target_.attr("ethnicGroup")))
+            .then(response =>response.json()).then(result=>{
+                labels["_groups"][0][0].innerHTML = result["name"]
+            })
             labels["_groups"][0][1].innerHTML = event.target.getAttribute("regionName")
             let counts = d3.selectAll(".countBooks-rect-button-content-menu")["_groups"][0]
             counts[0].innerHTML = commits.length
@@ -185,6 +191,7 @@ export default class PointMenu{
             d3.selectAll(".cont-books-rects-menu").on("click", FillCatalogBooks.bind(this, event))
             event.target.before(document.querySelector(".rect-menu-fairyTales-cont"))
             d3.select(".rect-menu-fairyTales-cont").style("display", "block")
+            
         })
     }
     
