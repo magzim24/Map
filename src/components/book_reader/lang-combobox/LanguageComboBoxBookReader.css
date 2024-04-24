@@ -13,24 +13,31 @@
     align-items: center;
     width: inherit;
     justify-content: space-between;
+    background: transparent
 }
+
 #combobox-btn img{
-    width: 15px;
+    width: 12px;
 }
+
 .combobox-option{
     width: inherit;
-    height:40px;
+    height:19px;
     background-color: white;
     display: flex;
     align-items: center;
     line-height: 0.3em
 }
 .combobox-option img{
-    width: 15px;
+    width: 10px;
+    padding-left: 5px;
+    padding-right: 3px;
 }
 #combobox-btn-arrow{
     transform: rotate(180deg);
+    padding-right: 5px;
 }
-/* #transIcon{
+#transIcon{
     width: 15px;
-} */
+    padding-right: 5px;
+}

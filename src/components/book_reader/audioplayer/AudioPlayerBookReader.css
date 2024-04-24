@@ -1,0 +1,27 @@
+.controls{
+width: 150px;
+}
+
+.back-play-btn {
+    width: 20px;
+    height: 20px;
+    margin-left: 20px;
+    background: transparent;
+    border: none;
+}
+
+.play-btn{
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    padding-left: 12px;
+    padding-right: 17px;
+}
+
+.forward-play-btn{
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border: none;
+}

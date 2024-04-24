@@ -77,25 +77,20 @@ const imageClicked = (storyId)=>{
         let img = URL.createObjectURL(blob);
         preview.attr("src", blob.type==="application/octet-stream" ? img : "Preview.jpg")
         .attr("storyId", storyId)
-        fetch("http://saintmolly.ru:3005/api/story/text/" + String(storyId))
-        .then(response => {
-            if(response.headers.get("content-type") !== null) return response.json();
-
-        }).then(commits=>{
-            if(commits !== undefined && commits !== null){
-                d3.select(".cont-text-story").selectChild("section").text(commits["text"])
-            }
-            fetch("http://saintmolly.ru:3005/api/story/" + String(storyId))
-            .then(response => response.json())
-            .then(commits => {
-                FillBookInfoInBookProfile(commits)
-                d3.select("#main-reader-books-wrapper").style("display", "flex");
-            })
-        })
     })
+    fetch("http://saintmolly.ru:3005/api/story/text/" + String(storyId))
+    .then(response => {
+        if(response.headers.get("content-type") !== null) return response.json();
+
+    }).then(commits=>{
+        if(commits !== undefined && commits !== null){
+            d3.select(".cont-text-story").selectChild("section").text(commits["text"])
+        }
+    })
+    fetch("http://saintmolly.ru:3005/api/story/" + String(storyId))
+    .then(response => response.json())
+    .then(commits => FillBookInfoInBookProfile(commits))
     
-    
-    
-    
+    d3.select("#main-reader-books-wrapper").style("display", "flex");
 }
 export default imageClicked

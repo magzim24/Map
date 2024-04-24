@@ -8,9 +8,39 @@
     background-color:rgba(0,0,0,0.5);
     z-index: 15;
 }
+
 #main-cont-reader-horizontal{
     width: 50%;
     height: 75%;
     background-color:white;
     border-radius: 12px;
+}
+
+.preview-img-book-reader{
+    width: 170px
+}
+
+#closeBtn{
+   float: right;
+   background: transparent;
+   border: none;
+   padding-top: 9px;
+   padding-right: 9px;
+}
+
+#imgDiv{
+  width:132px;
+  height: 132px;
+  float: left;
+  padding-top: 15px
+}
+
+#closeImg{
+    width: 17px;
+    height: 17px;
+}
+
+#allDiv{
+ margin-left: 170px;
+ padding-top: 15px;
 }

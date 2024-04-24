@@ -1,0 +1,12 @@
+.cont-text-story{
+      borderLeftWidth: 10%;
+      margin-left: 20px;
+      margin-right: 20px;
+      width: 90%;
+      height: 90%;
+      marginTop: 50px;
+      border: 2px solid #ccc;
+      borderRadius: 10px;
+      fontSize: 14px;
+      padding: 10px;
+}
