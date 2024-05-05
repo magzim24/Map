@@ -15,6 +15,7 @@ const Map = ()=>{
     let height = window.innerHeight;
     
     const pointRadius = 1.5;
+    let zoomedPointRadius = 1.5;
     
     let projection = d3.geoAlbers()
     .rotate([-100, 0])
@@ -41,8 +42,38 @@ const Map = ()=>{
     }
 
     const [window_width, window_height] = useWindowSize();
+    const catalog = d3.select(".main-content-catalog-wrapper")
+    const bookProfile = d3.select("#main-cont-reader-horizontal")
+    
     if(window_width<801) {
-        d3.select(".main-content-catalog-wrapper").style("width", String(window_width)+"px").style("height", String(window_height)+"px")
+        
+        catalog.style("width", String(window_width)+"px").style("height", String(window_height)+"px")
+        bookProfile.style("width", String(window_width)+"px").style("height", String(window_height)+"px")
+        d3.select("#main-reader-books-wrapper").style("width", "fit-content").style("height", "fit-content")
+        d3.select("#fullscreen-textreader-wrapper").style("width", String(window_width)+"px").style("height", String(window_height)+"px")
+        d3.select("#main-fullscreen-textreader").style("width", String(window_width)+"px").style("height", String(window_height)+"px")
+    } 
+    else if(window_width <1001 && Number(catalog.style("width").slice(0, -2))*3/4 != window_width*3/4){
+        catalog.style("width", "75%").style("height", "75%")
+        bookProfile.style("width", "75%").style("height", "75%")
+        d3.select("#main-reader-books-wrapper").style("width", "100%").style("height", "100%")
+        d3.select("#main-fullscreen-textreader").style("width", "100%").style("height", "100%")
+        d3.select("#fullscreen-textreader-wrapper").style("width", "75%").style("height", "75%")
+    }else{
+        if(Number(catalog.style("width").slice(0, -2))/2 != window_width/2){
+            catalog.style("width", "50%").style("height", "75%")
+            bookProfile.style("width", "50%").style("height", "75%")
+            d3.select("#fullscreen-textreader-wrapper").style("width", "50%").style("height", "75%")
+        }
+    }
+    if(window_width < 600){
+        d3.select(".login-cont-main").style("width", String(window_width)+"px").style("height", String(window_height)+"px")
+        d3.select("#user-profile-menu-main-cont").style("width", String(window_width)+"px").style("height", String(window_height)+"px")
+        d3.select("#user-profile-menu-main-wrapper").style("width", "100%").style("height", "100%")
+        
+    }
+    if(window_width<450) {
+        d3.select("#main-cont-search-panel").style("width", String(window_width)+"px").style("height", String(window_height)+"px")
     }
 
     function calculateScaleCenter(features) {
@@ -68,7 +99,6 @@ const Map = ()=>{
         .then(response => response.json())
         .then(commit => {
             commit.forEach(data=>{
-                console.log(data)
                 fetch("http://saintmolly.ru:3005/api/ethnic-group/"+String(data["ethnicGroupId"]))
                 .then(response =>{
                     if(response){
@@ -78,10 +108,15 @@ const Map = ()=>{
                     const span = cont.append("span").text(commit_["name"])
                     .style("display", "block")
                     .attr("class", "span-result-searching")
-                    const circle = addPointCircleInPath(g, data, document.querySelector("path[id*="+ "'" + data["constituent"]["id"] + "'" +"]"), projection, pointRadius)
+                    
+                    const circle = addPointCircleInPath(g, data, document.querySelector("path[id*="+ "'" + data["constituent"]["id"] + "'" +"]"), projection, zoomedPointRadius)
                     .on("click", pointClicked)
                     span.on("click", (event)=>{
-                        circle["_groups"][0][0].dispatchEvent(new Event("click"))
+                        const event_ = new Event("click")
+                        circle["_groups"][0][0].dispatchEvent(event_)
+                        const constituent = document.querySelector('path[regionName*=' + "'" + data["constituent"]["name"] + "'"+']')
+                        const [[x0, y0], [x1, y1]] = path.bounds(constituent["__data__"])
+                        setZoomedPoint(event_, x0, x1, y0, y1)
                     })
                 })
                 
@@ -94,10 +129,14 @@ const Map = ()=>{
     function zoomed(event){
         const {transform} = event;
         let g = d3.select(".map-paths-cont");
+        const tryZoomedPointRadius = pointRadius*scaleCenter.scale/1000
+        zoomedPointRadius = tryZoomedPointRadius<0.5025?0.5025:tryZoomedPointRadius;
+        
         g.attr("transform", transform);
         g.attr("stroke-width", 1 / transform.k);
-        d3.selectAll(".points-circle").attr("r", pointRadius*scaleCenter.scale/1000);
-        d3.select("#semicircle-rect-menu-fT").attr("r", (pointRadius*scaleCenter.scale/1000)*1.4);
+        d3.selectAll(".points-circle").attr("r", zoomedPointRadius);
+        d3.select("#semicircle-rect-menu-fT").attr("r", zoomedPointRadius*1.4);
+        d3.select("#img1").selectChild("image").attr("width", 2*zoomedPointRadius).attr("height", 2*zoomedPointRadius)
     }
 
     function reset(event) {
@@ -139,8 +178,7 @@ const Map = ()=>{
         else{
             PointMenu.MovePointMenuTo(event, settingsPointMenu)
         }
-        const [[x0, y0], [x1, y1]] = path.bounds(document.querySelector('path[regionName*=' + "'" + event.target.getAttribute("regionName") + "'"+']')["__data__"])
-        setZoomedPoint(event, x0, x1, y0, y1)
+        
     }
 
     
@@ -164,7 +202,7 @@ const Map = ()=>{
         .then(commits =>{
             if(commits.statusCode === undefined){
                 commits.map((data)=>{
-                    addPointCircleInPath(g, data, elem, projection, pointRadius).on("click", pointClicked)
+                    addPointCircleInPath(g, data, elem, projection, zoomedPointRadius).on("click", pointClicked)
 
                 })
             }}
@@ -174,6 +212,11 @@ const Map = ()=>{
         const [[x0, y0], [x1, y1]] = path.bounds(d);
         event.stopPropagation();
         
+        const listPointsByNations = document.querySelector(".header-nations-cont");
+        if(listPointsByNations){
+            d3.select(listPointsByNations.nextSibling).selectChildren().remove()
+        }
+
         let g = d3.select(".points");
         g.selectChildren("g").remove()
         const pointMenu = document.querySelector(".rect-menu-fairyTales-cont")
@@ -224,6 +267,7 @@ const Map = ()=>{
         document.querySelector("#search-input").addEventListener("foundedSearchedData", (event)=>{
             foundedPointsBySearchInput(event.detail.container, event.detail.nameEthnicGroup)
         })
+        
       }, []);
 
      return (
@@ -235,7 +279,7 @@ const Map = ()=>{
                 </g>
                 <defs>
                     <pattern id="img1"  width={pointRadius} height={pointRadius}>
-                        <image href="pointPlus.svg" x="0" y="0" width={2*pointRadius*scaleCenter.scale/1000} height={2*pointRadius*scaleCenter.scale/1000} />
+                        <image href="pointPlus.svg" x="0" y="0" width={2*zoomedPointRadius} height={2*zoomedPointRadius} />
                     </pattern>
                 </defs>
             </svg>           

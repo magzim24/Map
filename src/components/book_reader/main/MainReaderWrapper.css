@@ -14,3 +14,109 @@
     background-color:white;
     border-radius: 12px;
 }
+#BookProfile-btn-close-cont{
+    display: flex;
+    justify-content: flex-end;
+}
+#BookProfile-btn-close{
+    margin: 10px;
+    width: 17px;
+    height: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border:none;
+    background:none;
+}
+#BookProfile-btn-close img{
+    width: 17px;
+    height: 17px;
+}
+#BookProfile-content-cont{
+    padding: 0 25px;
+    margin-bottom: 15px;
+    display: flex;
+
+}
+#TextBlock-cont{
+    margin: 0 25px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.preview-img-book-reader{
+    border-radius:6px;
+    width:180px;
+    height:260px;
+    object-fit: cover;
+}
+#BookProfile-wrapper{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+#BookProfile-bookInfoAndAudio-cont{
+    margin-left: 15px;
+}
+#btn-offer-voice-acting{
+    margin-top: 15px;
+}
+#voice-over-suggestion-button{
+    border:none;
+    background-color:#3D7AFF;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items:center;
+    font-size: 14px;
+}
+#voice-over-suggestion-button img{
+    width:30px;
+    height: 30px;
+    margin-right: 5px;
+}
+#btn-bookProfile-textReader-fullscreen{
+    border:none;
+    margin: 10px 10px 0 0;
+    background: none;
+    position: absolute;
+}
+#btn-bookProfile-textReader-fullscreen img{
+    width: 15px;
+}
+@media (max-width: 1000px){
+    #main-cont-reader-horizontal{
+        width: 75%;
+    }
+}
+@media (max-width: 800px){
+    #main-cont-reader-horizontal{
+        border-radius:0;
+    }
+    .preview-img-book-reader{
+        width:170px;
+        height:250px;
+    }
+    #main-reader-books-wrapper{
+        z-index: 100;
+    }
+    #main-fullscreen-textreader{
+        z-index: 101;
+    }
+}
+@media (max-width: 450px){
+    .preview-img-book-reader{
+        width:150px;
+        height:220px;
+    }
+    #voice-over-suggestion-button{
+        padding: 8px 12px;
+    }
+    #voice-over-suggestion-button img{
+        display: none;
+        
+    }
+
+}

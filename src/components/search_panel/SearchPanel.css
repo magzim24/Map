@@ -32,9 +32,15 @@
     width: 12px;
     border: none;
     background:none;
-    transform: rotate(90deg);
+    transform: rotate(-90deg);
 }
 .content-cont{
     overflow: hidden;
-    transition: height 0.75s ease-out;
+    transition: max-height 0.75s ease-out;
+}
+@media (max-width: 450px) {
+    #main-cont-search-panel{
+        width: 100%;
+         left:-450px; 
+    }
 }

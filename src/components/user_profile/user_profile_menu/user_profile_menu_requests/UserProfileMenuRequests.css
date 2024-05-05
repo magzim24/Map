@@ -1,0 +1,61 @@
+.user-profile-menu-requests-cont{
+    padding: 15px 20px 0 20px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+.request-cont{
+    display: flex;
+    align-items:center;
+    margin-top: 15px;
+    border:solid #b1b1b1 1px;
+    border-radius: 10px;
+    padding: 10px 15px 10px 5px;
+    max-width: fit-content;
+    margin-right: 15px;
+}
+.request-cont :first-child{
+    margin-top: 1px;
+    align-self:flex-start;
+}
+.content-cont-request{
+    display: flex;
+    flex-direction: column;
+}
+.icon-file-requests{
+    width:20px;
+    background-color:#E2E4EA;
+    border-radius:50%;
+    padding: 4px;
+}
+.content-cont-request :first-child{
+    font-weight: bold;
+    font-size: 14px;
+}
+.status-request{
+    align-self: flex-end;
+    font-size: 12px;
+    color:#b1b1b1;
+}
+.content-cont-request{
+    margin-left: 7px;
+}
+progress {
+    width: 220px;
+    height : 10px;
+    border: 1px solid rgb(169 169 169); 
+    border-radius:16px;
+   margin:3px 0;
+ }
+ 
+ .SEND-request::-webkit-progress-bar {
+    background-color: #E2E4EA;
+ }
+.SEND-request::-webkit-progress-value {
+    background-color: #FFB849;
+ }
+.user-profile-menu-requests-pack{
+    display: flex;
+    flex-wrap: wrap;
+}
+ 

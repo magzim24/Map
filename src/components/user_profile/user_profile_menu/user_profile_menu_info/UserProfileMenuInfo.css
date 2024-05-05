@@ -1,0 +1,27 @@
+#user-profile-menu-icon-user{
+    width:45px;
+}
+#logout-icon-cont img{
+    width:30px;
+}
+#user-profile-menu-personal-data-cont{
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+}
+.user-profile-menu-user-info-cont{
+    padding: 20px 20px 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.user-profile-menu-info-content{
+    display: flex;
+}
+#user-profile-menu-names{
+    margin: 0;
+}
+#user-profile-menu-email{
+    font-size: 14px;
+    color: grey;
+}

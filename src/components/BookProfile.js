@@ -23,6 +23,8 @@ const OnChangedSelect = (elem) =>{
     d3.select("#cont-author-audio").style("display", "block")
     const userAudioId = parent.getAttribute("useraudioid")
     d3.select("#combobox-btn").attr("userAudioId", userAudioId)
+    d3.select("#book-audio-rating-profile").text(parent.children[2].innerHTML)
+    d3.select("#cont-profile-audio-rating").style("display", "flex");
     getAudio(userAudioId)
     document.getElementById("combobox-btn-arrow").style.transform = "rotate(180deg)"
 }
@@ -31,15 +33,15 @@ const FillBookInfoInBookProfile = (json)=>{
     d3.select("#bookname-in-book-profile").text(json["name"])
     
     if(json["audioId"] !== null){
-        d3.select(".opened-book-img-profile").attr("src", "AudioAndBook.svg")
-        d3.select("#btn-offer-voice-acting").style("display", "none")
-        d3.select("#main-cont-audioplayer").style("display", "block")
+        d3.select(".opened-book-img-profile").attr("src", "AudioAndBook.svg").attr("class", "opened-book-img-profile AudioAndBook-img")
+        /* d3.select("#btn-offer-voice-acting").style("display", "none") */
+        d3.select("#main-cont-audioplayer").style("display", "flex")
         d3.select("#combobox-language-selection").style("display", "block")
     }
     else {
-        d3.select(".opened-book-img-profile").attr("src", "opened_book.svg")
+        d3.select(".opened-book-img-profile").attr("src", "opened_book.svg").attr("class", "opened-book-img-profile opened-book-img")
         d3.select("#main-cont-audioplayer").style("display", "none")
-        d3.select("#btn-offer-voice-acting").style("display", "block")
+        /* d3.select("#btn-offer-voice-acting").style("display", "block") */
         d3.select("#combobox-language-selection").style("display", "none")
     }
     const elemSelect = d3.select("#lang-select")

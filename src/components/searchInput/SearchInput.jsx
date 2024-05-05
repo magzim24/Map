@@ -6,7 +6,7 @@ import foundedPointsBySearchInput from "../Map.jsx"
 const SearchInput=()=>{
 
     function buttonPanelOpenerClicked(event){
-        if(d3.select("#main-cont-search-panel").style("left")==="-260px"){
+        if(Number(d3.select("#main-cont-search-panel").style("left").slice(0, -2))<=Number("-"+d3.select("#main-cont-search-panel").style("width").slice(0, -2))){
             d3.select("#btn-panel-opener-icon").transition().duration(750).style("transform", "rotate(180deg)")
             d3.select("#main-cont-search-panel").transition()
             .duration(750).style("left", "0px")
@@ -14,7 +14,7 @@ const SearchInput=()=>{
         else{
             d3.select("#btn-panel-opener-icon").transition().duration(750).style("transform", "rotate(0deg)")
             d3.select("#main-cont-search-panel").transition()
-            .duration(750).style("left", "-260px")
+            .duration(750).style("left", "-"+d3.select("#main-cont-search-panel").style("width"))
         }
         
     }
@@ -26,21 +26,22 @@ const SearchInput=()=>{
 
         block.classList.toggle("active")
         let content = block.nextSibling
-        console.log(content.style.height)
-        if(content.style.height!=="0px"){
+        
+        if(block.classList.contains("active")){
             d3.select(block).selectChild("img").transition().duration(750).style("transform", "rotate(-90deg)")
-            content.style.height = 0;
+            
+            content.style.maxHeight = 0+"px";
         }
         else{
             d3.select(block).selectChild("img").transition().duration(750).style("transform", "rotate(90deg)")
             
-            content.style.height = content.scrollHeight+"px";
+            content.style.maxHeight = content.scrollHeight+"px";
         }
 
         
     }
     function appendHeaderCategory(panel, nameOfCategory, elemClassName){
-        const div = panel.append("div").attr("class", elemClassName+ " header-cont")
+        const div = panel.append("div").attr("class", elemClassName+ " header-cont active")
         .on("click", ButtonExtendingListClicked.bind(this, document.querySelector("."+elemClassName)))
         div.append("h3").text(nameOfCategory).attr("class", "result-searching-header")
         div.append("img").attr("src", "arrow-panel.svg").attr("class", "btn-expanding-list")
@@ -50,7 +51,7 @@ const SearchInput=()=>{
     }
     function fillSearchingPanelByFairyTales(panel, nameFairyTales){
         appendHeaderCategory(panel, "Сказки", "header-fairyTales-cont")
-        const cont = panel.append("div").attr("class", "content-cont")
+        const cont = panel.append("div").attr("class", "content-cont").style("max-height", "0px")
         fetch("http://saintmolly.ru:3005/api/story/by-name/"+String(nameFairyTales))
         .then(response => response.json())
         .then(commit => {
@@ -65,7 +66,7 @@ const SearchInput=()=>{
     }
     function fillSearchingPanelByNations(panel, nameEthnicGroup){
         appendHeaderCategory(panel, "Народности", "header-nations-cont")
-        const cont = panel.append("div").attr("class", "content-cont")
+        const cont = panel.append("div").attr("class", "content-cont").style("max-height", "0px")
         document.querySelector("#search-input").dispatchEvent(new CustomEvent("foundedSearchedData", {
             detail:{ container: cont, nameEthnicGroup:nameEthnicGroup}
         }))
@@ -73,7 +74,7 @@ const SearchInput=()=>{
     }
     function fillSearchingPanelByRegions(panel, searchInDocument){
         appendHeaderCategory(panel, "Регионы", "header-regions-cont")
-        const cont = panel.append("div").attr("class", "content-cont")
+        const cont = panel.append("div").attr("class", "content-cont").style("max-height", "0px")
 
         searchInDocument.forEach(data=>{
             cont.append("span").text(data.getAttribute("regionName"))
@@ -89,9 +90,13 @@ const SearchInput=()=>{
             if(valueInput !== ''){
                 const searchInDocument = document.querySelectorAll('path[regionName*=' + "'" +valueInput + "'"+']')
                 const panel = d3.select("#search-panel-cont-wrapper")
-                panel.selectChildren().remove()
+                console.log(panel.selectChildren())
+                panel.selectChildren("div").remove()
                 if(searchInDocument.length !== 0){
                     fillSearchingPanelByRegions(panel, searchInDocument)
+                }else{
+                    appendHeaderCategory(panel, "Регионы", "header-regions-cont")
+                    panel.append("div").attr("class", "content-cont")
                 }
                 fillSearchingPanelByNations(panel, valueInput)
                 fillSearchingPanelByFairyTales(panel, valueInput)

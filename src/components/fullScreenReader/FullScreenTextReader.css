@@ -1,0 +1,34 @@
+#main-fullscreen-textreader{
+    position: absolute;
+    /* z-index: 20; */
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    
+}
+#fullscreen-textreader-wrapper{
+    display: flex;
+    width: 50%;
+    height:75%;
+    flex-direction: column;
+    background-color:white;
+    border-radius: 12px;
+    align-items: flex-start;
+}
+#cont-content-fullscreen-textreader{
+    overflow-y: auto;
+    padding: 5px 15px 0 15px ;
+    border-radius:8px;
+}
+#close-btn-fullscreen-reader img{
+    transform: rotate(180deg);
+    width:20px;
+    transform:scale(1, -1);
+}
+#close-btn-fullscreen-reader{
+    border:none;
+    background:none;
+    margin: 5px 0 0 5px;
+}

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="30mm"
+   height="30mm"
+   viewBox="0 0 30 30"
+   version="1.1"
+   id="svg735"
+   inkscape:version="1.1-alpha (2a16015, 2021-02-21)"
+   sodipodi:docname="profileIcon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview737"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     objecttolerance="10.0"
+     gridtolerance="10.0"
+     guidetolerance="10.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="3.1072952"
+     inkscape:cx="53.261757"
+     inkscape:cy="85.444087"
+     inkscape:window-width="1856"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs732">
+    <inkscape:path-effect
+       effect="bspline"
+       id="path-effect1556"
+       is_visible="true"
+       lpeversion="1"
+       weight="33.333333"
+       steps="2"
+       helper_size="0"
+       apply_no_weight="true"
+       apply_with_weight="true"
+       only_selected="false" />
+  </defs>
+  <g
+     inkscape:label="Слой 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:#b3b3b3;fill-rule:evenodd;stroke-width:0.264583"
+       id="path761"
+       cx="15.007526"
+       cy="15.050101"
+       r="14.964952" />
+    <circle
+       style="fill:#6f7c91;fill-rule:evenodd;stroke-width:0.0688744"
+       id="path761-9"
+       cx="14.986239"
+       cy="12.218893"
+       r="3.8955717" />
+    <path
+       id="path761-2"
+       style="fill:#6f7c91;fill-rule:evenodd;stroke-width:0.264583"
+       d="m 15.04908,19.205556 a 9.6644199,9.6644199 0 0 0 -9.3963243,7.509619 14.964952,14.964952 0 0 0 9.3751373,3.304191 14.964952,14.964952 0 0 0 9.428882,-3.351734 9.6644199,9.6644199 0 0 0 -9.407695,-7.462076 z" />
+  </g>
+</svg>

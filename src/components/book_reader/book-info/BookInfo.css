@@ -1,3 +1,22 @@
 #cont-author-audio{
     display: none;
 }
+#bookname-in-book-profile{
+    font-size: 22px;
+    font-weight: bold;
+
+}
+.book-specification-img{
+    margin-top: 10px;
+}
+#cont-author-audio span{
+    color:grey;
+}
+#cont-profile-audio-rating{
+    display: flex;
+    align-items: center;
+}
+#book-audio-rating-profile{
+    margin-left:5px;
+    color:#FF6600;
+}

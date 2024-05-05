@@ -1,6 +1,7 @@
 let id = 0
 function addPointCircleInPath(g, data, targetElem, projection, pointRadius){
     const coord = projection([Number(data["longitude"]), Number(data["latitude"])])
+    
     return g.append("g").append('circle')
         .attr('cx', coord[0])
         .attr('cy', coord[1])

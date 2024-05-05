@@ -1,0 +1,15 @@
+.user-profile-menu-books-with-voiceover-cont{
+    padding: 15px 20px 0 20px;
+}
+.star-img-book-menu-profile{
+    width: 14px;
+}
+.Book-audio-rating-user-profile-menu{
+    color:#FF6600;
+}
+#user-profile-menu-books-pack{
+    display: flex;
+    overflow-x: auto;
+    margin-top: 15px;
+    
+}

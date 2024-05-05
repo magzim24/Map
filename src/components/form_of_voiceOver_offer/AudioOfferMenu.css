@@ -1,0 +1,97 @@
+.offer-main-cont{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* display: flex; */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 102;
+}
+.offer-main-wrapper{
+    border-radius: 16px;
+    box-shadow: 1px 1px 16px grey;
+    padding: 15px;
+    display: flex;
+    width: 30%;
+    height: 20%;
+    background-color: white;
+    flex-direction: column;
+    align-items: center;
+}
+.btn-close-offer{
+    align-self: flex-end;
+    background: none;
+    border: none;
+}
+.btn-close-offer :first-child{
+    background: none;
+    width: 15px;
+}
+.header-offer{
+    margin: 0 0 10px 0;
+    align-self: flex-start;
+}
+#combobox-offer{
+    align-self: flex-start;
+    font-weight: bold;
+    border-radius: 16px;
+    border: none;
+    background-color:white;
+}
+#combobox-offer{
+    font-weight: bold;
+}
+
+#input-file-offer{
+    display: none;
+}
+#send-offer-btn{
+    align-self:flex-end;
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: none;
+    background-color: #3D7AFF;
+    color: white;
+}
+#offer-btn-upload img{
+    transform: rotate(-90deg);
+    width:30px;
+}
+#offer-btn-upload{
+    border:none;
+    background:none;
+    
+}
+.upload-cont{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    margin: 10px 0;
+    height: -webkit-fill-available;
+    width: 100%;
+    border-radius: 19px;
+    border: 1px solid grey;
+}
+.upload-cont span{
+    margin: 0 10px;
+}
+#offer-cont-sendBtn-cont{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+}
+@media (max-width:800px){
+    .offer-main-wrapper{
+        width: 50%;
+        height: 25%;
+    }
+}
+@media (max-width:550px){
+    .offer-main-wrapper{
+        width: 85%;
+        height: 30%;
+    }
+}

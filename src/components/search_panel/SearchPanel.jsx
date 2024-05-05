@@ -1,7 +1,7 @@
 import './SearchPanel.css'
 
 const SearchPanel = ()=>{
-    return <div id="search-panel-cont-wrapper">
+    return <div id="search-panel-cont-wrapper" >
 
            </div>
 }

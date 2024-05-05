@@ -11,10 +11,10 @@ const BookInfo =()=>{
                 </div>
                 <div className="book-specification-img">
                     <img className="opened-book-img-profile" src="" alt="" />
-                    {/* <span id="cont-profile-audio-rating">
+                    <div id="cont-profile-audio-rating" style={{display:"none"}}>
                         <img className="img-star" src="star.svg" alt="" />
                         <span id="book-audio-rating-profile"></span>
-                    </span> */}
+                    </div>
                     
                 </div>
             </div>

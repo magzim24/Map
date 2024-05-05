@@ -44,6 +44,11 @@
     height: 100%;
     margin:5px 30px 5px 30px;
 }
+@media (max-width: 1000px) {
+    .main-content-catalog-wrapper{
+        width: 75%;
+    }
+}
 @media (max-width: 800px) {
     .main-content-catalog-wrapper{
         /* height: 100%;

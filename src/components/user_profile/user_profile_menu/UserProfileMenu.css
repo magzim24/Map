@@ -1,0 +1,37 @@
+#user-profile-menu-main-cont{
+    height: 100%;
+    width: 100%;
+    display: none;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    
+}
+#user-profile-menu-main-wrapper{
+    width: 50%;
+    height: 75%;
+    background-color: white;
+    border-radius: 16px;
+    max-height: 75%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 1px 16px grey;
+}
+.user-profile-menu-close-btn-cont img{
+    width:15px;
+    margin: 10px 10px 0 0;
+}
+.user-profile-menu-close-btn-cont{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+@media (max-width:600px){
+    #user-profile-menu-main-wrapper{
+        max-height: 100%;
+        border-radius:0;
+    }
+    #user-profile-menu-main-cont{
+        z-index: 99;
+    }
+}

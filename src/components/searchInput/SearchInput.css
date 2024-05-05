@@ -20,6 +20,7 @@
     height: inherit;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 #btn-panel-opener-icon{
     width: 10px;
@@ -63,7 +64,12 @@
         width: 100%;
     }
     #search-btn-panel-opener{
-        display: none;
+        /* display: none; */
+        position: fixed;
+        right:0;
+        margin-left: 0;
+        margin-top: 150px;
+        border-radius:10px 0 0 10px;
     }
     #search-input-cont{
         width: -webkit-fill-available;

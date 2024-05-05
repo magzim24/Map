@@ -29,7 +29,7 @@ export default class PointMenu{
         .attr("x", (size_rect[0] - width)/2 + 1.4*2/800*scaleCenter.scale + 1.2/800*scaleCenter.scale)
         .style("font-size", String(font_size_k*scaleCenter.scale/800)+"px")
         .text(Text_)
-        text.attr("y", y +(1.9/800/2*scaleCenter.scale) + (text.node().getBBox().height/2) - 0.25/800*scaleCenter.scale)
+        text.attr("y", y +(1.9/2*scaleCenter.scale/800) + (text.node().getBBox().height/2) - 0.25*scaleCenter.scale/800)//
     }
 
     addCountFairyTalesToContentRect(rect_g, width, y, font_size_k, countText){
@@ -57,6 +57,7 @@ export default class PointMenu{
         fetch('http://saintmolly.ru:3005/api/story/ethnic-group/'+String(target.attr("ethnicGroup")))
             .then(response => response.json())
             .then(commits=>{
+                console.log("scaleCenter.scale "+scaleCenter.scale)
                 this.appendContentRect(6*scaleCenter.scale/800, "books.svg", 0.75,
                 "Книги", commits.length, event, content_svg, size_rect)
                 let countAudio = 0
@@ -147,7 +148,7 @@ export default class PointMenu{
     }
     static MovePointMenuTo(event, settingsPointMenu){
         const target_ = d3.select(event.target)
-        console.log(target_.attr("ethnicGroup"))
+        
         fetch('http://saintmolly.ru:3005/api/story/ethnic-group/'+String(target_.attr("ethnicGroup")))
         .then(response => response.json())
         .then(commits=>{
@@ -172,7 +173,7 @@ export default class PointMenu{
             .attr('cx', Number(target_.attr("cx")))
             .attr('cy', Number(target_.attr("cy")))
             let labels = d3.selectAll(".label-nationalityAndRegion-rect-menu")
-            console.log(labels, commits)
+            
             //
             fetch("http://saintmolly.ru:3005/api/ethnic-group/"+String(target_.attr("ethnicGroup")))
             .then(response =>response.json()).then(result=>{

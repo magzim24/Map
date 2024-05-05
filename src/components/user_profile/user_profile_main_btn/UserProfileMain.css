@@ -1,0 +1,24 @@
+.user-profile-btn-main{
+    right: 0;
+    position: absolute;
+    background-color:white;
+    padding: 5px;
+    margin:8px 8px 0 0;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    border-radius:14px;
+    box-shadow: 1px 1px 16px grey;
+}
+.user-profile-btn-main img{
+    width: 25px;
+    height: 25px;
+    padding:0;
+}
+
+@media (max-width:450px) {
+    .user-profile-btn-main{
+        bottom:0;
+        margin-bottom:50px;
+    }
+}
