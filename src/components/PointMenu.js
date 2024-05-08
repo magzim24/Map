@@ -117,13 +117,27 @@ export default class PointMenu{
         if(!Number.isNaN(Number(Text_))){
             fetch('http://saintmolly.ru:3005/api/ethnic-group/'+String(Text_))
             .then(response => response.json()).then(commits=>{
-                if(commits.statusCode === undefined)
-                elem.text(commits["name"])
+                if(commits.statusCode === undefined){
+                    
+                    elem.text(commits["name"])
+                    
+                }
+                
             })
         }else{
-            elem.text(Text_)
-        }
-        
+            if(Text_.length > 25){
+                elem.text(Text_.slice(0, 25)+"...")
+            }
+            else{
+                elem.text(Text_)
+            }
+            
+        }//23
+        /* console.log()
+        console.log()
+        if(elem.node().getBBox().width > document.querySelector(".rect-menu-fairyTales").width.baseVal.value * 0.8){
+            elem.text()
+        } */
         return parent_target_g
     }
 

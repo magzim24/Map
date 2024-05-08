@@ -20,7 +20,7 @@ const UserProfileMain = ()=>{
                 "Authorization":"Bearer "+ localStorage.getItem("accessToken")
             }
         }).then(response=>response.json()).then(commits=>{
-            console.log(commits)
+            //console.log(commits)
             if(commits["statusCode"] === 401){
                 refreshToken();
             }
@@ -40,6 +40,7 @@ const UserProfileMain = ()=>{
         //user-profile-menu-books-pack
     }
     function CreateBlockApprovedBookByData(data){
+        console.log(data)
         const div = document.createElement("div");
         div.setAttribute("class", "cont-bookInCatalog")
         const img = document.createElement("img");
@@ -78,12 +79,13 @@ const UserProfileMain = ()=>{
             storyName.innerHTML = data["story"]["name"]
             div.append(img, storyName, divSpecification);
             document.querySelector("#user-profile-menu-books-pack").append(div)
-            document.querySelector("#user-profile-menu-main-cont").style.display = "flex";
+            
         })
 
     }
 
     function CreateBlockRequestByData(data){
+        
         const div = document.querySelector(".user-profile-menu-requests-pack");
         div.innerHTML = '';
         const div1 = document.createElement("div");
@@ -135,12 +137,12 @@ const UserProfileMain = ()=>{
                 refreshToken();
             }
             else{
-                console.log(commits.length)
+                
                 if(commits.length === 0){
                     document.querySelector(".user-profile-menu-requests-pack").innerHTML = "Вы не создавали заявок"
                 }
                 else{
-                    console.log(commits)
+                    //console.log(commits)
                     commits.map((data)=>{
                         CreateBlockRequestByData(data);
                     })
@@ -171,11 +173,11 @@ const UserProfileMain = ()=>{
         const accessToken = localStorage.getItem("accessToken")
         
         if(accessToken !== "undefined" && accessToken!==null){
-            
+            console.log("Отработал")
             FillUserProfileMenuInfo();
             FillUserProfileMenuRequestsPack()
             FillUserProfileMenuBookPack()
-            
+            document.querySelector("#user-profile-menu-main-cont").style.display = "flex";
         }
         else{
             document.querySelector(".login-cont-main").style.display = "flex";

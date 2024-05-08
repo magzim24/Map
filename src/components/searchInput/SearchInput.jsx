@@ -55,12 +55,15 @@ const SearchInput=()=>{
         fetch("http://saintmolly.ru:3005/api/story/by-name/"+String(nameFairyTales))
         .then(response => response.json())
         .then(commit => {
-            commit.forEach(data=>{
+            if(commit.lenght > 0){
+                commit.forEach(data=>{
                 //fetch()
-                cont.append("span").text(data["name"])
-                .style("display", "block")
-                .attr("class", "span-result-searching").on("click", FairyTalesResultClicked.bind(this, data["id"]))
-            })
+                    cont.append("span").text(data["name"])
+                    .style("display", "block")
+                    .attr("class", "span-result-searching").on("click", FairyTalesResultClicked.bind(this, data["id"]))
+                })
+            }
+            
         })
         
     }
@@ -84,8 +87,8 @@ const SearchInput=()=>{
     }
 
     function buttonSearchSubmitClicked(event){
-        if(event.key === "Enter" || event.keyCode === 13 || event.target.getAttribute("id") === "btn-submit-search" 
-        || event.target.getAttribute("id") === "search-icon" || event.target.getAttribute("id")==="search-input"){
+        if((event.key === "Enter" || event.keyCode === 13) && (event.target.getAttribute("id") === "btn-submit-search" 
+        || event.target.getAttribute("id") === "search-icon" || event.target.getAttribute("id")==="search-input")){
             const valueInput = document.getElementById("search-input").value
             if(valueInput !== ''){
                 const searchInDocument = document.querySelectorAll('path[regionName*=' + "'" +valueInput + "'"+']')
@@ -108,7 +111,7 @@ const SearchInput=()=>{
 
     return <span id="search-span-cont">
                 <div id="search-input-cont">
-                    <input id="search-input" onKeyUp={buttonSearchSubmitClicked} onInput={buttonSearchSubmitClicked} placeholder="Найти регион, народность или сказку"/>
+                    <input id="search-input"  onKeyUp={buttonSearchSubmitClicked} placeholder="Найти регион, народность или сказку"/> {/*  */}
                     <button id="btn-submit-search" onClick={buttonSearchSubmitClicked}>
                         <img id="search-icon" src="search.svg" alt="" />
                     </button>

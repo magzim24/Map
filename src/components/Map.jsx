@@ -95,10 +95,13 @@ const Map = ()=>{
     function foundedPointsBySearchInput(cont, nameEthnicGroup){
         const g = d3.select(".points")
         g.selectChildren("g").remove()
+        console.log(Boolean(nameEthnicGroup.trim()))
+        if(!Boolean(nameEthnicGroup.trim())) return;
         fetch("http://saintmolly.ru:3005/api/map/ethnic-group/by-name-ethnic-group/"+String(nameEthnicGroup))
         .then(response => response.json())
         .then(commit => {
-            commit.forEach(data=>{
+            if(!(commit.length === 0 || commit["statusCode"])!==undefined){
+                commit.forEach(data=>{
                 fetch("http://saintmolly.ru:3005/api/ethnic-group/"+String(data["ethnicGroupId"]))
                 .then(response =>{
                     if(response){
@@ -121,6 +124,8 @@ const Map = ()=>{
                 })
                 
             })
+            }
+            
         })
         
     }
