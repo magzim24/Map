@@ -11,6 +11,9 @@ const MainReaderWrapper = ()=>{
         document.getElementById("lang-select").style.display = "none"
         document.querySelector("#combobox-btn-arrow").style.transform = "rotate(180deg)"
         document.querySelector("#combobox-btn").setAttribute("isopened", "0")
+        document.querySelector("#cont-profile-audio-rating").style.display = "none"
+        document.querySelector("#cont-author-audio").style.display = "none"
+        
     }
 
     const btnFullScreenClicked = ()=>{
@@ -26,17 +29,18 @@ const MainReaderWrapper = ()=>{
             const select = document.querySelector("#combobox-offer")
             select.innerHTML = ''
             let option;
-            let id = 1;
+            
             option = document.createElement("option");
             option.innerHTML = "Выберете язык вашей озвучки";
             option.setAttribute("value", 0);
             select.append(option);
+            
+            console.log(commits.sort((a, b) => a.name > b.name ? 1 : -1))
             commits.map(data=>{
                 option = document.createElement("option");
-                option.innerHTML = data["name"];
-                option.setAttribute("value", id);
+                option.innerHTML = data["name"].length>25 ? data["name"].slice(0, 25) + "..." : data["name"];
+                option.setAttribute("value", data["id"]);
                 select.append(option);
-                id++;
             })
             document.querySelector(".offer-main-cont").style.display = "flex";
         })

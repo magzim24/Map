@@ -20,3 +20,15 @@
     margin-left:5px;
     color:#FF6600;
 }
+.stars-rate-cont{
+    background-color:white;
+    border-radius:16px;
+    padding:5px;
+    position: absolute;
+    box-shadow: 1px 1px 6px grey;
+    display: flex;
+    margin-left: 20px;
+}
+.star-rate{
+    width: 15px;
+}

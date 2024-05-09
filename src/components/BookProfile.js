@@ -22,8 +22,10 @@ const OnChangedSelect = (elem) =>{
     d3.select("#book-audio-author-in-book-profile").text(parent.getAttribute("author"))
     d3.select("#cont-author-audio").style("display", "block")
     const userAudioId = parent.getAttribute("useraudioid")
+    const audioId = parent.getAttribute("audioid")
+    localStorage.setItem("currentStoryAudioId", audioId)
     d3.select("#combobox-btn").attr("userAudioId", userAudioId)
-    d3.select("#book-audio-rating-profile").text(parent.children[2].innerHTML)
+    d3.select("#book-audio-rating-profile").text(Number(parent.children[2].innerHTML).toFixed(2))
     d3.select("#cont-profile-audio-rating").style("display", "flex");
     getAudio(userAudioId)
     document.getElementById("combobox-btn-arrow").style.transform = "rotate(180deg)"
@@ -62,7 +64,7 @@ const FillBookInfoInBookProfile = (json)=>{
             a.append("img").attr("src", "star.svg")
             fetch("http://saintmolly.ru:3005/api/story/rating/"+String(item["id"]))
             .then(response=>response.json()).then(commit=>{
-                a.append("span").text(commit["ratingAudio"])
+                a.append("span").text(Number(commit["ratingAudio"]).toFixed(2))
             })
             //
         })

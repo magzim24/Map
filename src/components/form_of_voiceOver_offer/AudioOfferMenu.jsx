@@ -54,7 +54,7 @@ const AudioOfferMenu = () =>{
                                 //btnSendClicked()
                             }
                             else{
-                                document.querySelector(".offer-main-cont").style.display = "none"
+                                //document.querySelector(".offer-main-cont").style.display = "none"
                                 document.querySelector(".login-cont-main").style.display = "flex";
                             }
                         }

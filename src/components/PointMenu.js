@@ -159,10 +159,11 @@ export default class PointMenu{
         this.appendTextToRectMenuFairyTales(content_svg, "50%", settingsPointMenu["ratioYCoordNation"]*scaleCenter.scale, target.attr("ethnicGroup"), settingsPointMenu["font-size-header"])
         this.appendTextToRectMenuFairyTales(content_svg, "50%", settingsPointMenu["ratioYCoordRegion"]*scaleCenter.scale, target.attr("regionName"), settingsPointMenu["font-size-header"]/2)
         this.addButtonToPointMenu(parent_target_g, settingsPointMenu["size-rect"], event, content_svg)
+        document.querySelector(".points").append(event.target.parentNode)
     }
     static MovePointMenuTo(event, settingsPointMenu){
         const target_ = d3.select(event.target)
-        
+        console.log(event.target.parentNode)
         fetch('http://saintmolly.ru:3005/api/story/ethnic-group/'+String(target_.attr("ethnicGroup")))
         .then(response => response.json())
         .then(commits=>{
@@ -206,7 +207,7 @@ export default class PointMenu{
             d3.selectAll(".cont-books-rects-menu").on("click", FillCatalogBooks.bind(this, event))
             event.target.before(document.querySelector(".rect-menu-fairyTales-cont"))
             d3.select(".rect-menu-fairyTales-cont").style("display", "block")
-            
+            document.querySelector(".points").append(event.target.parentNode)
         })
     }
     
