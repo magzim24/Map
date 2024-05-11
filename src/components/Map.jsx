@@ -169,9 +169,10 @@ const Map = ()=>{
 
     function reset(event) {
         if(d3.select(event.target).attr("class") === d3.select(".main-svg").attr("class")){
-            console.log(colorRegion[Number(CurrentElement.getAttribute("ID"))])
-            //states.transition()
-            d3.select(CurrentElement).style("fill", colorRegion[Number(CurrentElement.getAttribute("ID"))]);
+            if(CurrentElement){
+                d3.select(CurrentElement).style("fill", colorRegion[Number(CurrentElement.getAttribute("ID"))]);
+            }
+            
             d3.selectAll("circle").remove()
             d3.select(".rect-menu-fairyTales-cont").remove()
             svg.transition().duration(750).call(
