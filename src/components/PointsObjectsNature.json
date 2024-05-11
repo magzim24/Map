@@ -1,0 +1,22 @@
+[
+    {
+        "coord":[
+            {
+                "latitude":52.694252,
+                "longitude":41.526681,
+                "type":4
+            }
+        ],
+        "sizeRatio":0.6
+    },
+    {
+        "coord":[
+            {
+                "latitude":55.291150,
+                "longitude":38.589637,
+                "type":4
+            }
+        ],
+        "sizeRatio":0.45
+    }
+]

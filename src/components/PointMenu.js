@@ -109,7 +109,7 @@ export default class PointMenu{
             .attr("clip-path", "url(#cut-off-bottom)")
     }
 
-    appendTextToRectMenuFairyTales(parent_target_g, xText, yText, Text_, font_size_k){
+    appendTextToRectMenuFairyTales(parent_target_g, xText, yText, Text_, font_size_k, elem_type){
         const elem = parent_target_g.append("text").attr("class", "label-nationalityAndRegion-rect-menu")
             .attr('x', xText)
             .attr('y', yText)
@@ -118,19 +118,27 @@ export default class PointMenu{
             fetch('http://saintmolly.ru:3005/api/ethnic-group/'+String(Text_))
             .then(response => response.json()).then(commits=>{
                 if(commits.statusCode === undefined){
-                    
                     elem.text(commits["name"])
-                    
                 }
-                
             })
         }else{
-            if(Text_.length > 25){
-                elem.text(Text_.slice(0, 25)+"...")
+            if(elem_type==="header"){
+                if(Text_.length > 25){
+                    elem.text(Text_.slice(0, 25)+"...")
+                }
+                else{
+                    elem.text(Text_)
+                } 
             }
-            else{
-                elem.text(Text_)
+            else if("region_name"){
+                if(Text_.length > 18){
+                    elem.text(Text_.slice(0, 18)+"...")
+                }
+                else{
+                    elem.text(Text_)
+                }
             }
+            
             
         }//23
         /* console.log()
@@ -156,8 +164,8 @@ export default class PointMenu{
         const xText = Number(rect.attr("x"))
         const yText = Number(rect.attr("y")) + 5.5*scaleCenter.scale/800
         const content_svg = this.appendSVGElemContToPointMenu(xText, yText, settingsPointMenu["size-rect"])
-        this.appendTextToRectMenuFairyTales(content_svg, "50%", settingsPointMenu["ratioYCoordNation"]*scaleCenter.scale, target.attr("ethnicGroup"), settingsPointMenu["font-size-header"])
-        this.appendTextToRectMenuFairyTales(content_svg, "50%", settingsPointMenu["ratioYCoordRegion"]*scaleCenter.scale, target.attr("regionName"), settingsPointMenu["font-size-header"]/2)
+        this.appendTextToRectMenuFairyTales(content_svg, "50%", settingsPointMenu["ratioYCoordNation"]*scaleCenter.scale, target.attr("ethnicGroup"), settingsPointMenu["font-size-header"]*(3/4), "header")
+        this.appendTextToRectMenuFairyTales(content_svg, "50%", settingsPointMenu["ratioYCoordRegion"]*scaleCenter.scale, target.attr("regionName"), settingsPointMenu["font-size-header"]/2, "region_name")
         this.addButtonToPointMenu(parent_target_g, settingsPointMenu["size-rect"], event, content_svg)
         document.querySelector(".points").append(event.target.parentNode)
     }
@@ -192,7 +200,13 @@ export default class PointMenu{
             //
             fetch("http://saintmolly.ru:3005/api/ethnic-group/"+String(target_.attr("ethnicGroup")))
             .then(response =>response.json()).then(result=>{
-                labels["_groups"][0][0].innerHTML = result["name"]
+                if(result["name"].length > 18){
+                    labels["_groups"][0][0].innerHTML = result["name"].slice(0, 18)+"..."
+                }
+                else{
+                    labels["_groups"][0][0].innerHTML = result["name"]
+                }
+                
             })
             labels["_groups"][0][1].innerHTML = event.target.getAttribute("regionName")
             let counts = d3.selectAll(".countBooks-rect-button-content-menu")["_groups"][0]

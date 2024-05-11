@@ -1,11 +1,9 @@
 import "./SearchInput.css"
 import * as d3 from 'd3'
 import imageClicked from "../BookProfile.js"
-//import addPointCircleInPath from "../PointGenerator.js"
-import foundedPointsBySearchInput from "../Map.jsx"
 const SearchInput=()=>{
 
-    function buttonPanelOpenerClicked(event){
+    function buttonPanelOpenerClicked(){
         if(Number(d3.select("#main-cont-search-panel").style("left").slice(0, -2))<=Number("-"+d3.select("#main-cont-search-panel").style("width").slice(0, -2))){
             d3.select("#btn-panel-opener-icon").transition().duration(750).style("transform", "rotate(180deg)")
             d3.select("#main-cont-search-panel").transition()
@@ -14,8 +12,12 @@ const SearchInput=()=>{
         else{
             d3.select("#btn-panel-opener-icon").transition().duration(750).style("transform", "rotate(0deg)")
             d3.select("#main-cont-search-panel").transition()
-            .duration(750).style("left", "-"+d3.select("#main-cont-search-panel").style("width"))
+            .duration(750).style("left", Number(d3.select("#main-cont-search-panel").style("width").slice(0, -2))<250 ?
+                                "-260px":"-"+d3.select("#main-cont-search-panel").style("width"))
         }
+        [".header-regions-cont", ".header-nations-cont", ".header-fairyTales-cont"].map(data=>{
+            ButtonExtendingListClicked(document.querySelector(data))
+        })
         
     }
 
@@ -35,7 +37,7 @@ const SearchInput=()=>{
         else{
             d3.select(block).selectChild("img").transition().duration(750).style("transform", "rotate(90deg)")
             
-            content.style.maxHeight = content.scrollHeight+"px";
+            content.style.maxHeight = "fit-content";
         }
 
         
@@ -55,7 +57,8 @@ const SearchInput=()=>{
         fetch("http://saintmolly.ru:3005/api/story/by-name/"+String(nameFairyTales))
         .then(response => response.json())
         .then(commit => {
-            if(commit.lenght > 0){
+            console.log(commit)
+            if(commit.length > 0){
                 commit.forEach(data=>{
                 //fetch()
                     cont.append("span").text(data["name"])
@@ -63,6 +66,8 @@ const SearchInput=()=>{
                     .attr("class", "span-result-searching").on("click", FairyTalesResultClicked.bind(this, data["id"]))
                 })
             }
+            
+            ButtonExtendingListClicked(document.querySelector(".header-fairyTales-cont"))
             
         })
         
@@ -87,8 +92,8 @@ const SearchInput=()=>{
     }
 
     function buttonSearchSubmitClicked(event){
-        if((event.key === "Enter" || event.keyCode === 13) && (event.target.getAttribute("id") === "btn-submit-search" 
-        || event.target.getAttribute("id") === "search-icon" || event.target.getAttribute("id")==="search-input")){
+        if((event.key === "Enter" || event.keyCode === 13) || (event.target.getAttribute("id") === "btn-submit-search" 
+        || event.target.getAttribute("id") === "search-icon" )){
             const valueInput = document.getElementById("search-input").value
             if(valueInput !== ''){
                 const searchInDocument = document.querySelectorAll('path[regionName*=' + "'" +valueInput + "'"+']')
@@ -103,6 +108,14 @@ const SearchInput=()=>{
                 }
                 fillSearchingPanelByNations(panel, valueInput)
                 fillSearchingPanelByFairyTales(panel, valueInput)
+                
+                if(Number(d3.select("#main-cont-search-panel").style("left").slice(0, -2))<=Number("-"+d3.select("#main-cont-search-panel").style("width").slice(0, -2))){
+                    d3.select("#btn-panel-opener-icon").transition().duration(750).style("transform", "rotate(180deg)")
+                    d3.select("#main-cont-search-panel").transition()
+                    .duration(750).style("left", "0px")
+                }
+                ButtonExtendingListClicked(document.querySelector(".header-regions-cont"))
+                
             }
         }
         

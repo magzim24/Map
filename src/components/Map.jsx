@@ -7,16 +7,18 @@ import { useWindowSize } from "./useWindowSize";
 import './Map.css';
 import PointMenu from "./PointMenu.js"
 import addPointCircleInPath from "./PointGenerator.js";
+import PointsNature from './PointsObjectsNature.json'
 
-let id = 0
 
 const Map = ()=>{
     let width = window.innerWidth;
     let height = window.innerHeight;
+
+    let CurrentElement;
     
     const pointRadius = 1.5;
     let zoomedPointRadius = 1.5;
-    
+    let colorRegion;
     let projection = d3.geoAlbers()
     .rotate([-100, 0])
     .parallels([52, 64]).scale(1)
@@ -91,7 +93,24 @@ const Map = ()=>{
           'center': center
         };
     }
+    function ButtonExtendingListClicked(block){
 
+        block.classList.toggle("active")
+        let content = block.nextSibling
+        
+        if(block.classList.contains("active")){
+            d3.select(block).selectChild("img").transition().duration(750).style("transform", "rotate(-90deg)")
+            
+            content.style.maxHeight = 0+"px";
+        }
+        else{
+            d3.select(block).selectChild("img").transition().duration(750).style("transform", "rotate(90deg)")
+            
+            content.style.maxHeight = "fit-content";
+        }
+
+        
+    }
     function foundedPointsBySearchInput(cont, nameEthnicGroup){
         const g = d3.select(".points")
         g.selectChildren("g").remove()
@@ -102,29 +121,33 @@ const Map = ()=>{
         .then(commit => {
             if(!(commit.length === 0 || commit["statusCode"])!==undefined){
                 commit.forEach(data=>{
-                fetch("http://saintmolly.ru:3005/api/ethnic-group/"+String(data["ethnicGroupId"]))
-                .then(response =>{
-                    if(response){
-                        return response.json()
-                    }
-                }).then(commit_=>{
-                    const span = cont.append("span").text(commit_["name"])
-                    .style("display", "block")
-                    .attr("class", "span-result-searching")
-                    
-                    const circle = addPointCircleInPath(g, data, document.querySelector("path[id*="+ "'" + data["constituent"]["id"] + "'" +"]"), projection, zoomedPointRadius)
-                    .on("click", pointClicked)
-                    span.on("click", (event)=>{
-                        const event_ = new Event("click")
-                        circle["_groups"][0][0].dispatchEvent(event_)
-                        const constituent = document.querySelector('path[regionName*=' + "'" + data["constituent"]["name"] + "'"+']')
-                        const [[x0, y0], [x1, y1]] = path.bounds(constituent["__data__"])
-                        setZoomedPoint(event_, x0, x1, y0, y1)
+                    fetch("http://saintmolly.ru:3005/api/ethnic-group/"+String(data["ethnicGroupId"]))
+                    .then(response =>{
+                        if(response){
+                            return response.json()
+                        }
+                    }).then(commit_=>{
+                        const span = cont.append("span").text(commit_["name"])
+                        .style("display", "block")
+                        .attr("class", "span-result-searching")
+                        
+                        const circle = addPointCircleInPath(g, data, document.querySelector("path[id*="+ "'" + data["constituent"]["id"] + "'" +"]"), projection, zoomedPointRadius)
+                        .on("click", pointClicked)
+                        span.on("click", (event)=>{
+                            const event_ = new Event("click")
+                            circle["_groups"][0][0].dispatchEvent(event_)
+                            const constituent = document.querySelector('path[regionName*=' + "'" + data["constituent"]["name"] + "'"+']')
+                            const [[x0, y0], [x1, y1]] = path.bounds(constituent["__data__"])
+                            setZoomedPoint(event_, x0, x1, y0, y1)
+                        })
+                        
+                        
                     })
+                    
                 })
-                
-            })
+                ButtonExtendingListClicked(document.querySelector(".header-nations-cont"))
             }
+            //
             
         })
         
@@ -146,8 +169,9 @@ const Map = ()=>{
 
     function reset(event) {
         if(d3.select(event.target).attr("class") === d3.select(".main-svg").attr("class")){
-            states.transition().style("fill", null);
-            
+            console.log(colorRegion[Number(CurrentElement.getAttribute("ID"))])
+            //states.transition()
+            d3.select(CurrentElement).style("fill", colorRegion[Number(CurrentElement.getAttribute("ID"))]);
             d3.selectAll("circle").remove()
             d3.select(".rect-menu-fairyTales-cont").remove()
             svg.transition().duration(750).call(
@@ -189,9 +213,9 @@ const Map = ()=>{
     
     
     function setZoomedPath(event, x0, x1, y0, y1){
-        states.transition().style("fill", null);
+        states.transition()//.style("fill", null);
         d3.select(event.target).transition().style("fill", "rgb(231 73 73)");
-
+        CurrentElement = event.target;
         svg.transition().duration(1000).call(
             zoom.transform,
             d3.zoomIdentity.translate(width / 2, height / 2)
@@ -249,6 +273,30 @@ const Map = ()=>{
         svg.transition().call(zoom.scaleBy, 0.6);
     };
 
+    function FillMapByNatureObjects(){
+        let NatureSizeRatio;
+        const ObjectTypesToFile = {
+            1:"tree_1.svg",
+            2:"tree_2.svg",
+            3:"tree_3.svg",
+            4:"tree_4.svg"
+        }
+        const NatureCont = d3.select("#natureObjects");
+        PointsNature.map(data=>{
+            NatureSizeRatio = data["sizeRatio"]
+            data["coord"].map(coords=>{
+                const [x, y] = projection([Number(coords["longitude"]), Number(coords["latitude"])])
+                NatureCont.append("image")
+                .attr("href", ObjectTypesToFile[coords["type"]])
+                .attr("x", x-NatureSizeRatio*30/2)
+                .attr("y", y - NatureSizeRatio*30/2)
+                .attr("width", NatureSizeRatio*30 + "px")
+                .attr("height", NatureSizeRatio*30+ "px")
+            })
+            
+        })
+    }
+
     useEffect(() => {
         svg = d3.select("svg");
         svg.on("click", reset);
@@ -262,7 +310,17 @@ const Map = ()=>{
                 .attr("d", path)
                 .attr("regionName", (d)=>d.properties.shapeName)
                 .attr("ID", ((d)=>d.properties.id))
-               
+        colorRegion = {}
+        fetch("http://saintmolly.ru:3005/api/constituent/percent-of-filled/{constituentId}")
+        .then(response=>response.json())
+        .then(commit=>{
+            
+            commit.map(data=>{
+                states["_groups"][0][data["constituentId"]-1].style.fill = "rgb(255, "+(255-data["filled"]*170)+", "+(255-255*data["filled"])+")"
+                colorRegion[data["constituentId"]] = "rgb(255, "+(255-data["filled"]*170)+", "+(255-255*data["filled"])+")"
+            })
+        })
+        FillMapByNatureObjects()       
         zoom.on("zoom", zoomed);
         
         svg.call(zoom);
@@ -280,6 +338,7 @@ const Map = ()=>{
             <svg className="main-svg" viewBox={"0, 0, " + window_width + " "+ window_height} width={window_width} height={window_height}>
                 <g className='map-paths-cont' transform="translate(0,0) scale(1)">
                     <g id="states"></g>
+                    <g id="natureObjects"></g>
                     <g className="points"></g>
                 </g>
                 <defs>
