@@ -288,7 +288,7 @@ const Map = ()=>{
         PointsNature.map(data=>{
             NatureSizeRatio = data["sizeRatio"]
             let ratio = filledRatio.find((obj)=>obj.constituentId===data["constituentId"])
-            //ratio = {"filled":1}
+            ratio = {"filled":1}
             d3.shuffle(data["coord"]).slice(0, Math.round(data["coord"].length*(ratio?(ratio["filled"]>1?1:ratio["filled"]):0))).map(coords=>{
                 const [x, y] = projection([Number(coords["longitude"]), Number(coords["latitude"])])
                 NatureCont.append("image")
