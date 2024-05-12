@@ -14,7 +14,6 @@ const Map = ()=>{
     let width = window.innerWidth;
     let height = window.innerHeight;
 
-    let CurrentElement;
     
     const pointRadius = 1.5;
     let zoomedPointRadius = 1.5;
@@ -114,12 +113,11 @@ const Map = ()=>{
     function foundedPointsBySearchInput(cont, nameEthnicGroup){
         const g = d3.select(".points")
         g.selectChildren("g").remove()
-        console.log(Boolean(nameEthnicGroup.trim()))
         if(!Boolean(nameEthnicGroup.trim())) return;
         fetch("http://saintmolly.ru:3005/api/map/ethnic-group/by-name-ethnic-group/"+String(nameEthnicGroup))
         .then(response => response.json())
         .then(commit => {
-            if(!(commit.length === 0 || commit["statusCode"])!==undefined){
+            if(commit.length !== 0 && commit["statusCode"]===undefined && commit!==undefined && commit!==null){
                 commit.forEach(data=>{
                     fetch("http://saintmolly.ru:3005/api/ethnic-group/"+String(data["ethnicGroupId"]))
                     .then(response =>{
@@ -147,6 +145,7 @@ const Map = ()=>{
                 })
                 ButtonExtendingListClicked(document.querySelector(".header-nations-cont"))
             }
+            else ButtonExtendingListClicked(document.querySelector(".header-nations-cont"))
             //
             
         })
@@ -166,12 +165,16 @@ const Map = ()=>{
         d3.select("#semicircle-rect-menu-fT").attr("r", zoomedPointRadius*1.4);
         d3.select("#img1").selectChild("image").attr("width", 2*zoomedPointRadius).attr("height", 2*zoomedPointRadius)
     }
-
+    function SetColorRegion(){
+        states["_groups"][0].map(data=>{
+            if(colorRegion[Number(data.getAttribute("ID"))])
+                data.style.fill = colorRegion[Number(data.getAttribute("ID"))]
+            else data.style.fill = "rgb(255, 255, 255)"
+        })
+    }
     function reset(event) {
         if(d3.select(event.target).attr("class") === d3.select(".main-svg").attr("class")){
-            if(CurrentElement){
-                d3.select(CurrentElement).style("fill", colorRegion[Number(CurrentElement.getAttribute("ID"))]);
-            }
+            SetColorRegion()
             
             d3.selectAll("circle").remove()
             d3.select(".rect-menu-fairyTales-cont").remove()
@@ -216,7 +219,6 @@ const Map = ()=>{
     function setZoomedPath(event, x0, x1, y0, y1){
         states.transition()//.style("fill", null);
         d3.select(event.target).transition().style("fill", "rgb(231 73 73)");
-        CurrentElement = event.target;
         svg.transition().duration(1000).call(
             zoom.transform,
             d3.zoomIdentity.translate(width / 2, height / 2)
@@ -261,7 +263,7 @@ const Map = ()=>{
             fillPathByPoints(event.target, g)
             
         }
-       
+        SetColorRegion()
         setZoomedPath(event, x0, x1, y0, y1)
         
     }
@@ -274,7 +276,7 @@ const Map = ()=>{
         svg.transition().call(zoom.scaleBy, 0.6);
     };
 
-    function FillMapByNatureObjects(){
+    function FillMapByNatureObjects(filledRatio){
         let NatureSizeRatio;
         const ObjectTypesToFile = {
             1:"tree_1.svg",
@@ -285,7 +287,9 @@ const Map = ()=>{
         const NatureCont = d3.select("#natureObjects");
         PointsNature.map(data=>{
             NatureSizeRatio = data["sizeRatio"]
-            data["coord"].map(coords=>{
+            let ratio = filledRatio.find((obj)=>obj.constituentId===data["constituentId"])
+            //ratio = {"filled":1}
+            d3.shuffle(data["coord"]).slice(0, Math.round(data["coord"].length*(ratio?(ratio["filled"]>1?1:ratio["filled"]):0))).map(coords=>{
                 const [x, y] = projection([Number(coords["longitude"]), Number(coords["latitude"])])
                 NatureCont.append("image")
                 .attr("href", ObjectTypesToFile[coords["type"]])
@@ -293,6 +297,7 @@ const Map = ()=>{
                 .attr("y", y - NatureSizeRatio*30/2)
                 .attr("width", NatureSizeRatio*30 + "px")
                 .attr("height", NatureSizeRatio*30+ "px")
+                .attr("constituentId", data["constituentId"])
             })
             
         })
@@ -320,8 +325,9 @@ const Map = ()=>{
                 states["_groups"][0][data["constituentId"]-1].style.fill = "rgb(255, "+(255-data["filled"]*170)+", "+(255-255*data["filled"])+")"
                 colorRegion[data["constituentId"]] = "rgb(255, "+(255-data["filled"]*170)+", "+(255-255*data["filled"])+")"
             })
+            FillMapByNatureObjects(commit)
         })
-        FillMapByNatureObjects()       
+               
         zoom.on("zoom", zoomed);
         
         svg.call(zoom);

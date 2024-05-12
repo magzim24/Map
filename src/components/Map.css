@@ -33,3 +33,6 @@
 .main-svg{
     background: #82A9FD;
 }
+#natureObjects{
+    pointer-events: none;
+}

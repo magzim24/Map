@@ -54,7 +54,8 @@ const SearchInput=()=>{
     function fillSearchingPanelByFairyTales(panel, nameFairyTales){
         appendHeaderCategory(panel, "Сказки", "header-fairyTales-cont")
         const cont = panel.append("div").attr("class", "content-cont").style("max-height", "0px")
-        fetch("http://saintmolly.ru:3005/api/story/by-name/"+String(nameFairyTales))
+        console.log(String(nameFairyTales).split("/").join(""))
+        fetch("http://saintmolly.ru:3005/api/story/by-name/"+String(nameFairyTales).split("/").join(""))
         .then(response => response.json())
         .then(commit => {
             console.log(commit)

@@ -114,32 +114,31 @@ export default class PointMenu{
             .attr('x', xText)
             .attr('y', yText)
             .style("font-size", String(font_size_k*scaleCenter.scale/800)+"px")
+        console.log(Text_)
         if(!Number.isNaN(Number(Text_))){
             fetch('http://saintmolly.ru:3005/api/ethnic-group/'+String(Text_))
             .then(response => response.json()).then(commits=>{
                 if(commits.statusCode === undefined){
-                    elem.text(commits["name"])
+                    
+                    if(commits["name"].length > 18){
+                        elem.text(commits["name"].slice(0, 18)+"...")
+                    }
+                    else{
+                        elem.text(commits["name"])
+                    } 
                 }
             })
+            
         }else{
-            if(elem_type==="header"){
+            if("region_name"){
                 if(Text_.length > 25){
                     elem.text(Text_.slice(0, 25)+"...")
                 }
                 else{
                     elem.text(Text_)
-                } 
-            }
-            else if("region_name"){
-                if(Text_.length > 18){
-                    elem.text(Text_.slice(0, 18)+"...")
-                }
-                else{
-                    elem.text(Text_)
                 }
             }
-            
-            
+
         }//23
         /* console.log()
         console.log()
@@ -208,7 +207,13 @@ export default class PointMenu{
                 }
                 
             })
-            labels["_groups"][0][1].innerHTML = event.target.getAttribute("regionName")
+            if(event.target.getAttribute("regionName").length > 25){
+                labels["_groups"][0][1].innerHTML = event.target.getAttribute("regionName").slice(0, 25)+"..."
+            }
+            else{
+                labels["_groups"][0][1].innerHTML = event.target.getAttribute("regionName")
+            }
+            
             let counts = d3.selectAll(".countBooks-rect-button-content-menu")["_groups"][0]
             counts[0].innerHTML = commits.length
             let countAudio = 0
