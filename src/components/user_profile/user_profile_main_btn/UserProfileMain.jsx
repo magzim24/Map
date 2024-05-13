@@ -98,7 +98,7 @@ const UserProfileMain = ()=>{
         const contentDiv = document.createElement("div");
         contentDiv.setAttribute("class", "content-cont-request")
         const name = document.createElement("span");
-        name.innerHTML = data["storyName"];
+        name.innerHTML = data["userAudio"]["name"];
         const progressBar = document.createElement("progress");
         progressBar.setAttribute("max", 100);
         let value;
@@ -128,11 +128,18 @@ const UserProfileMain = ()=>{
     }
 
     function FillUserProfileMenuRequestsPack(){
-        fetch("http://saintmolly.ru:3005/api/add-story-request/my-requests",{
+        fetch("http://saintmolly.ru:3005/api/user/me", {
+            headers:{
+                Authorization:"Bearer " + localStorage.accessToken
+            }
+        }
+        ).then(response=>response.json()).then(commit_=>{localStorage.setItem("userId", commit_["id"])})
+        fetch("http://saintmolly.ru:3005/api/audio-story-request/my-requests",{
             headers:{
                 "Authorization":"Bearer "+ localStorage.getItem("accessToken")
             }
         }).then(response=>response.json()).then(commits=>{
+            console.log(commits)
             if(commits["statusCode"] === 401){
                 refreshToken();
             }
@@ -142,8 +149,9 @@ const UserProfileMain = ()=>{
                     document.querySelector(".user-profile-menu-requests-pack").innerHTML = "Вы не создавали заявок"
                 }
                 else{
-                    //console.log(commits)
+                    
                     commits.map((data)=>{
+                        console.log(data)
                         CreateBlockRequestByData(data);
                     })
                 }

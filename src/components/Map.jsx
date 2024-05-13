@@ -288,9 +288,9 @@ const Map = ()=>{
         const NatureCont = d3.select("#natureObjects");
         PointsNature.map(data=>{
             NatureSizeRatio = data["sizeRatio"]
-            console.log(filledRatio)
+            
             let ratio = filledRatio.find((obj)=>obj.constituentId===data["constituentId"])
-            console.log(ratio)
+            
             //ratio = {"filled":1}
             //d3.shuffle(data["coord"]).slice(0, Math.round(data["coord"].length*(ratio?(ratio["filled"]>1?1:ratio["filled"]):0)))
             let img;

@@ -54,12 +54,38 @@ const AudioOfferMenu = () =>{
                                 //btnSendClicked()
                             }
                             else{
-                                //document.querySelector(".offer-main-cont").style.display = "none"
+                                
+
                                 document.querySelector(".login-cont-main").style.display = "flex";
                             }
                         }
                         else{
-                            alert("Заявка успешно отправлена!")
+                            fetch("http://saintmolly.ru:3005/api/user/me", {
+                                headers:{
+                                    Authorization:"Bearer " + localStorage.accessToken
+                                }
+                            }).then(response=>response.json()).then(commit_=>{localStorage.setItem("userId", commit_["id"])})
+                            console.log(commit)
+                            fetch("http://saintmolly.ru:3005/api/audio-story-request/add", {
+                                    method:"POST",
+                                    headers:{
+                                        "Content-Type":"application/json;charset=utf-8",
+                                        "Authorization":"Bearer " + localStorage.accessToken
+                                    },
+                                    body:JSON.stringify({
+                                        "userAudioId":Number(commit["id"]),
+                                        "userId":Number(localStorage.userId),
+                                        "typeId":1,
+                                        "storyId":Number(document.querySelector(".preview-img-book-reader").getAttribute("storyid"))
+                                    })
+                            }).then(response=>response.json()).then(
+                                commit_=>{
+                                    if(!commit_["statusCode"]){
+                                        alert("Заявка отправлена успешно!")
+                                        
+                                    }
+                                }
+                            )
                         }
                     })
                 }else{
