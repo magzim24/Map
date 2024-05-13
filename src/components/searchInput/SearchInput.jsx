@@ -16,7 +16,8 @@ const SearchInput=()=>{
                                 "-260px":"-"+d3.select("#main-cont-search-panel").style("width"))
         }
         [".header-regions-cont", ".header-nations-cont", ".header-fairyTales-cont"].map(data=>{
-            ButtonExtendingListClicked(document.querySelector(data))
+            if(document.querySelector(data))
+                ButtonExtendingListClicked(document.querySelector(data))
         })
         
     }
