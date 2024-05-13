@@ -288,19 +288,25 @@ const Map = ()=>{
         const NatureCont = d3.select("#natureObjects");
         PointsNature.map(data=>{
             NatureSizeRatio = data["sizeRatio"]
+            console.log(filledRatio)
             let ratio = filledRatio.find((obj)=>obj.constituentId===data["constituentId"])
-            ratio = {"filled":1}
+            console.log(ratio)
+            //ratio = {"filled":1}
             //d3.shuffle(data["coord"]).slice(0, Math.round(data["coord"].length*(ratio?(ratio["filled"]>1?1:ratio["filled"]):0)))
+            let img;
             data["coord"].map(coords=>{
                 const [x, y] = projection([Number(coords["longitude"]), Number(coords["latitude"])])
-                NatureCont.append("image")
+                img = NatureCont.append("image")
                 .attr("href", ObjectTypesToFile[coords["type"]])
                 .attr("x", x - NatureSizeRatio*30/2*scaleCenter.scale/1000)
                 .attr("y", y - NatureSizeRatio*30/2*scaleCenter.scale/1000)
                 .attr("width", NatureSizeRatio*30*scaleCenter.scale/1000 + "px")
                 .attr("height", NatureSizeRatio*30*scaleCenter.scale/1000+ "px")
-                .style("opacity", ratio["filled"]*100 +"%")
                 .attr("constituentId", data["constituentId"])
+                if(ratio){
+                    img.style("opacity", ratio["filled"]*100 +"%")
+                }
+                else img.style("opacity", 0)
             })
             
         })
