@@ -29,7 +29,7 @@ const UserProfileMain = ()=>{
                     document.querySelector("#user-profile-menu-books-pack").innerHTML = "У вас нет действующих одобренных озвучек"
                 }
                 else{
-                    console.log(commits)
+                    
                     commits.map((data)=>{
                         document.querySelector("#user-profile-menu-books-pack").innerHTML = ''
                         CreateBlockApprovedBookByData(data);
@@ -40,7 +40,7 @@ const UserProfileMain = ()=>{
         //user-profile-menu-books-pack
     }
     function CreateBlockApprovedBookByData(data){
-        console.log(data)
+        
         const div = document.createElement("div");
         div.setAttribute("class", "cont-bookInCatalog")
         const img = document.createElement("img");
@@ -87,7 +87,7 @@ const UserProfileMain = ()=>{
     function CreateBlockRequestByData(data){
         
         const div = document.querySelector(".user-profile-menu-requests-pack");
-        div.innerHTML = '';
+        
         const div1 = document.createElement("div");
         div1.setAttribute("class", "request-cont");
         const imgDiv = document.createElement("div");
@@ -124,6 +124,7 @@ const UserProfileMain = ()=>{
         statusReq.innerHTML = stringStatus
         contentDiv.append(name, progressBar, statusReq);
         div1.append(imgDiv,contentDiv);
+        
         div.append(div1);
     }
 
@@ -139,7 +140,7 @@ const UserProfileMain = ()=>{
                 "Authorization":"Bearer "+ localStorage.getItem("accessToken")
             }
         }).then(response=>response.json()).then(commits=>{
-            console.log(commits)
+            //console.log(commits)
             if(commits["statusCode"] === 401){
                 refreshToken();
             }
@@ -149,9 +150,9 @@ const UserProfileMain = ()=>{
                     document.querySelector(".user-profile-menu-requests-pack").innerHTML = "Вы не создавали заявок"
                 }
                 else{
-                    
+                    document.querySelector(".user-profile-menu-requests-pack").innerHTML = ''
                     commits.map((data)=>{
-                        console.log(data)
+                        
                         CreateBlockRequestByData(data);
                     })
                 }
